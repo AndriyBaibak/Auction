@@ -1,6 +1,9 @@
 package entity.lot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 
 /**
@@ -16,6 +19,8 @@ public class Lot {
     private String owner;
     private Status state;
     private int ownerId;
+    private String remainingTime;
+    private SimpleDateFormat sp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     public Lot(){}
 
@@ -25,16 +30,23 @@ public class Lot {
         this.finishDate = finishDate;
         this.startPrice = startPrice;
         this.description = description;
+
     }
-    public Lot(String lotName, Date finishDate, double startPrice, String description, String owner, Status state, int ownerId){
+    public Lot(String lotName, String finishDate, double startPrice, String description, String owner, Status state, int ownerId){
         this.id = ++id;
         this.lotName = lotName;
-        this.finishDate = finishDate;
+        try {
+            this.finishDate = sp.parse(finishDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.startPrice = startPrice;
         this.description = description;
         this.owner = owner;
         this.ownerId = ownerId;
         this.state = state;
+        this.remainingTime = Util.defineRemainingTime(new Date(),getFinishDate());
+
     }
 
     public String getLotName() {
@@ -103,7 +115,7 @@ public class Lot {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("entity.lot{");
+        final StringBuilder sb = new StringBuilder("Lot{");
         sb.append("id=").append(id);
         sb.append(", lotName='").append(lotName).append('\'');
         sb.append(", finishDate=").append(finishDate);
@@ -112,6 +124,7 @@ public class Lot {
         sb.append(", owner='").append(owner).append('\'');
         sb.append(", state=").append(state);
         sb.append(", ownerId=").append(ownerId);
+        sb.append(", remainingTime=").append(remainingTime);
         sb.append('}');
         return sb.toString();
     }
