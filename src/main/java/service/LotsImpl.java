@@ -6,6 +6,7 @@ import entity.lot.Lot;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
@@ -21,8 +22,8 @@ import java.util.List;
 @WebService(endpointInterface = "service.Lots")
 public class LotsImpl implements Lots {
     private static Logger log = Logger.getLogger(LotsImpl.class);
-
-    private ActionWithLotImpl actionWithLot = new ActionWithLotImpl();
+    @Autowired
+    private ActionWithLotImpl actionWithLot;
 
 
     @Override

@@ -4,6 +4,7 @@ import entity.lot.Lot;
 import entity.lot.Status;
 import integration.LotIntegration;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by Andriy on 20.05.2015.
  */
 public class ActionWithLotImpl implements ActionWithLot {
-
+    @Inject
     private LotIntegration lotIntegration = new LotIntegration();
 
     @Override

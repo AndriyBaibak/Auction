@@ -13,11 +13,9 @@ public class Util {
         long hours = (milliSecond / (1000 * 60 * 60));
         long minutes = (milliSecond / (1000 * 60));
         long seconds = (milliSecond / 1000);
-
-
         SimpleDateFormat sp = new SimpleDateFormat("dd.MM.yyyy HH.mm.ss");
         String str = sp.format(milliSecond);
-        System.out.println(milliSecond + " " + seconds + " " + minutes + " " + str);
+
         StringBuilder sb = new StringBuilder()
                 .append(days)
                 .append(" days ")

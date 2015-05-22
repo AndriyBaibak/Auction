@@ -13,6 +13,8 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <mvc:annotation-driven />
+    <context:component-scan base-package="service" />
+
 
     <bean id="actionWithBid" class="buisnessLogic.ActionWithBidImpl"/>
     <bean id="actionWithLot" class="buisnessLogic.ActionWithLotImpl"/>
