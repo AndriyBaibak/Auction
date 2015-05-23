@@ -8,8 +8,8 @@ import javax.inject.Inject;
  * Created by Andriy on 21.05.2015.
  */
 public class ActionWithUserImpl implements ActionWithUser{
-    @Inject
-    private UserIntegration userIntegration;
+
+    private UserIntegration userIntegration = new UserIntegration();
 
     @Override
     public void registration(String login, String password, String firstName, String lastName) {

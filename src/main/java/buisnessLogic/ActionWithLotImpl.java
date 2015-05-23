@@ -1,23 +1,24 @@
 package buisnessLogic;
 
 import entity.lot.Lot;
-import entity.lot.Status;
+
 import integration.LotIntegration;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Andriy on 20.05.2015.
  */
 public class ActionWithLotImpl implements ActionWithLot {
-    @Inject
+
     private LotIntegration lotIntegration = new LotIntegration();
 
     @Override
-    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, Status state, int ownerId) {
+    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId) {
         lotIntegration.addLot(lotName, finishDate, startPrice, description, owner, state, ownerId);
     }
 
@@ -32,7 +33,12 @@ public class ActionWithLotImpl implements ActionWithLot {
     }
 
     @Override
-   public ArrayList<Lot> getAllLots(){
+    public void canceledLot(int id) {
+        lotIntegration.canceledLot(id);
+    }
+
+    @Override
+   public List<Lot> getAllLots(){
         return lotIntegration.getAllLots();
     }
 }

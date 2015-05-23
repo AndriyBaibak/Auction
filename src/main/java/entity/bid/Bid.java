@@ -1,14 +1,19 @@
 package entity.bid;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by Andriy on 19.05.2015.
  */
+@Entity
+@Table
 public class Bid {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private double newPrice;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateBid;
     private String bidderName;
     private int lotId;
@@ -16,11 +21,15 @@ public class Bid {
     public Bid(){}
 
     public Bid(double newPrice, String bidderName, int lotId ){
-        this.id = ++id;
         this.newPrice = newPrice;
         this.lotId = lotId;
         this.bidderName = bidderName;
         this.dateBid = new Date();
+    }
+    public Bid(int id, double newPrice, String bidderName, Date dateBid ){
+        this.newPrice = newPrice;
+        this.bidderName = bidderName;
+        this.dateBid = dateBid;
     }
 
     public int getId() {

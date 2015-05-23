@@ -1,10 +1,15 @@
 package entity.user;
 
+import javax.persistence.*;
+
 /**
  * Created by Andriy on 19.05.2015.
  */
+@Entity
+@Table
 public class User {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String login;
     private String password;
@@ -14,7 +19,7 @@ public class User {
     public User(){}
 
     public User(String login, String password, String firstName, String lastName){
-        this.id = ++id;
+
         this.login = login;
         this.password = password;
         this.firstName = firstName;

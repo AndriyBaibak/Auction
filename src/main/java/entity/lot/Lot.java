@@ -1,5 +1,6 @@
 package entity.lot;
 
+import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,37 +10,36 @@ import java.util.Date;
 /**
  * Created by Andriy on 19.05.2015.
  */
+@Entity
+@Table
 public class Lot {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String lotName;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date finishDate;
     private String description;
     private double startPrice;
     private String owner;
-    private Status state;
+    private String state;
     private int ownerId;
     private String remainingTime;
-    private SimpleDateFormat sp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private transient SimpleDateFormat sp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     public Lot(){}
 
     public Lot(String lotName, Date finishDate, double startPrice, String description){
-        this.id = id++;
         this.lotName = lotName;
         this.finishDate = finishDate;
         this.startPrice = startPrice;
         this.description = description;
 
     }
-    public Lot(String lotName, String finishDate, double startPrice, String description, String owner, Status state, int ownerId){
-        this.id = ++id;
+    public Lot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId) throws ParseException {
+
         this.lotName = lotName;
-        try {
-            this.finishDate = sp.parse(finishDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.finishDate = sp.parse(finishDate);
         this.startPrice = startPrice;
         this.description = description;
         this.owner = owner;
@@ -97,11 +97,11 @@ public class Lot {
         this.owner = owner;
     }
 
-    public Status getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(Status state) {
+    public void setState(String state) {
         this.state = state;
     }
 

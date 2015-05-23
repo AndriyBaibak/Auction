@@ -1,7 +1,7 @@
 package service;
 
 import entity.lot.Lot;
-import entity.lot.Status;
+
 import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -25,7 +25,7 @@ public class SoldLotJob implements Job {
            log.error(e1);
         }
         Lot soldLot = (Lot)schedulerContext.get("lot");
-        soldLot.setState(Status.SOLD);
+        soldLot.setState("SOLD");
 
     }
 }

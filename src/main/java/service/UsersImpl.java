@@ -13,8 +13,8 @@ import java.util.List;
  */
 @WebService(endpointInterface = "service.Users")
 public class UsersImpl implements Users {
-    @Inject
-    private ActionWithUserImpl actionWithUser;
+
+    private ActionWithUserImpl actionWithUser = new ActionWithUserImpl();
 
     @Override
     public void registration(String login, String password, String firstName, String lastName) {

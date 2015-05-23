@@ -1,7 +1,7 @@
 package service;
 
 import buisnessLogic.ActionWithLotImpl;
-import entity.lot.Status;
+
 import entity.lot.Lot;
 import org.apache.log4j.Logger;
 import org.quartz.*;
@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Andriy on 20.05.2015.
@@ -22,8 +23,8 @@ import java.util.List;
 @WebService(endpointInterface = "service.Lots")
 public class LotsImpl implements Lots {
     private static Logger log = Logger.getLogger(LotsImpl.class);
-    @Autowired
-    private ActionWithLotImpl actionWithLot;
+
+    private ActionWithLotImpl actionWithLot = new ActionWithLotImpl();
 
 
     @Override
@@ -32,7 +33,7 @@ public class LotsImpl implements Lots {
     }
 
     @Override
-    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, Status state, int ownerId) throws ParseException, SchedulerException {
+    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId) throws ParseException, SchedulerException {
         actionWithLot.addLot(lotName, finishDate, startPrice, description, owner, state, ownerId);
         setDeadlineLot(new Lot(lotName, finishDate, startPrice, description, owner, state, ownerId));
     }
@@ -43,18 +44,22 @@ public class LotsImpl implements Lots {
     }
 
     @Override
-    public ArrayList<Lot> getAllLots() {
-        System.out.print(actionWithLot.getAllLots().get(0).toString());
+    public List<Lot> getAllLots() {
         return actionWithLot.getAllLots();
+    }
+
+    @Override
+    public void canceledLot(int id) {
+        actionWithLot.canceledLot(id);
     }
 
     private void setDeadlineLot(Lot lot) throws ParseException, SchedulerException {
         JobDetail job = JobBuilder.newJob(SoldLotJob.class)
-                .withIdentity("soldLot", "group1").build();
+                .withIdentity(lot.getLotName(), lot.getDescription()).build();
 
         Trigger trigger = TriggerBuilder
                 .newTrigger()
-                .withIdentity("soldLot", "group1")
+                .withIdentity(lot.getLotName(), lot.getDescription())
                 .startAt(lot.getFinishDate())
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()).build();
         Scheduler scheduler = new StdSchedulerFactory().getScheduler();
