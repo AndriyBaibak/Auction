@@ -15,15 +15,16 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String role;
 
     public User(){}
 
     public User(String login, String password, String firstName, String lastName){
-
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = "ROLE_USER";
     }
 
     public int getId() {

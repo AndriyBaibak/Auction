@@ -1,6 +1,7 @@
 package integration;
 
 import entity.lot.Lot;
+import entity.lot.State;
 
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Vector;
  */
 public interface LotDao {
 
-    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId);
+    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId);
     public Lot getLotById(int id);
     public List<Lot> getAllLots();
     public void deleteLot(int id);

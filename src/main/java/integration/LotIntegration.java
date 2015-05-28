@@ -1,18 +1,13 @@
 package integration;
 
-import entity.bid.Bid;
 import entity.lot.Lot;
 
+import entity.lot.State;
 import org.apache.log4j.Logger;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
-import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +24,7 @@ public class LotIntegration implements LotDao {
     private static ArrayList<Lot> lotList = new ArrayList<Lot>();
 
     @Override
-    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId) {
+    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) {
         try {
             entityManager.getTransaction().begin();
             entityManager.persist(new Lot(lotName, finishDate, startPrice, description, owner, state, ownerId));
@@ -70,7 +65,7 @@ public class LotIntegration implements LotDao {
     @Override
     public void canceledLot(int id) {
         Lot lotForCanceled = getLotById(id);
-        lotForCanceled.setState("CANCELLED");
+        lotForCanceled.setState(State.Cancelled);
         entityManager.getTransaction().begin();
         entityManager.merge(lotForCanceled);
         entityManager.getTransaction().commit();

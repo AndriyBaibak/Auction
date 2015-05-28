@@ -1,6 +1,7 @@
 package entity.lot;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table
-public class Lot {
+public class Lot implements Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -22,24 +23,26 @@ public class Lot {
     private String description;
     private double startPrice;
     private String owner;
-    private String state;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private State state;
     private int ownerId;
     private String remainingTime;
     private transient SimpleDateFormat sp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     public Lot(){}
 
-    public Lot(String lotName, Date finishDate, double startPrice, String description){
+    public Lot(String lotName, Date finishDate, String startPrice, String description){
         this.lotName = lotName;
         this.finishDate = finishDate;
-        this.startPrice = startPrice;
+        this.startPrice = Double.parseDouble(startPrice);
         this.description = description;
 
     }
-    public Lot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId) throws ParseException {
+    public Lot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) throws ParseException {
 
         this.lotName = lotName;
-        this.finishDate = sp.parse(finishDate);
+        this.finishDate = finishDate;
         this.startPrice = startPrice;
         this.description = description;
         this.owner = owner;
@@ -97,11 +100,11 @@ public class Lot {
         this.owner = owner;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 

@@ -29,7 +29,7 @@ public class BidIntegration implements BidDao {
     public void addBid(double newPrice, String bidder, int lotId)throws Exception{
               Lot lotForBid = lot.getLotById(lotId);
           //  String lotOwner = lotForBid.getOwner();
-           // if((newPrice > getLastBiggestPriceWhichBid(lotId))&(bidder!=lotOwner)&(lotForBid.getState()== Status.ACTIVE)) {
+           // if((newPrice > getLastBiggestPriceWhichBid(lotId))&(bidder!=lotOwner)&(lotForBid.getState()== Status.active)) {
                 entityManager.getTransaction().begin();
                 entityManager.persist(new Bid(newPrice, bidder, lotId));
                 entityManager.getTransaction().commit();

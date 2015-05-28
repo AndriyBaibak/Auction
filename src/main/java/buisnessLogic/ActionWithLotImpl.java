@@ -2,13 +2,11 @@ package buisnessLogic;
 
 import entity.lot.Lot;
 
+import entity.lot.State;
 import integration.LotIntegration;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by Andriy on 20.05.2015.
@@ -18,7 +16,7 @@ public class ActionWithLotImpl implements ActionWithLot {
     private LotIntegration lotIntegration = new LotIntegration();
 
     @Override
-    public void addLot(String lotName, String finishDate, double startPrice, String description, String owner, String state, int ownerId) {
+    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) {
         lotIntegration.addLot(lotName, finishDate, startPrice, description, owner, state, ownerId);
     }
 
