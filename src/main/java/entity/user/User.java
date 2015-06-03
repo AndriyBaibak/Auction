@@ -2,9 +2,6 @@ package entity.user;
 
 import javax.persistence.*;
 
-/**
- * Created by Andriy on 19.05.2015.
- */
 @Entity
 @Table
 public class User {

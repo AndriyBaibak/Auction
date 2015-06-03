@@ -1,36 +1,31 @@
 package integration;
 
 import entity.lot.Lot;
-
 import entity.lot.State;
+import integration.jpa.EntityManagerUtil;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Andriy on 20.05.2015.
- */
 public class LotIntegration implements LotDao {
+
     private static Logger log = Logger.getLogger(LotIntegration.class);
 
-    private EntityManager entityManager = Persistence.createEntityManagerFactory("Eclipselink_JPA").createEntityManager();
-
-
-    private static ArrayList<Lot> lotList = new ArrayList<Lot>();
+    private EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
     @Override
-    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) {
+    public void addLot(String lotName, Date finishDate, double startPrice, String description)throws Exception{
+        Lot lotForAdding = new Lot(lotName, finishDate, startPrice, description);
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(new Lot(lotName, finishDate, startPrice, description, owner, state, ownerId));
+            entityManager.persist(lotForAdding);
             entityManager.getTransaction().commit();
-        }catch(Exception ex){
-            log.error("+++++++++++++++++ " + ex.toString());
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
     }
@@ -40,10 +35,10 @@ public class LotIntegration implements LotDao {
         Lot findLot = null;
         try {
             entityManager.getTransaction().begin();
-            findLot = entityManager.find(Lot.class, id);
+            findLot = (Lot) entityManager.getReference(Lot.class, id);
             entityManager.getTransaction().commit();
-        }catch(Exception ex){
-            log.error("+++++++++++++++++ " + ex.toString());
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
         return findLot;
@@ -56,8 +51,8 @@ public class LotIntegration implements LotDao {
             entityManager.getTransaction().begin();
             entityManager.remove(lotForDeleting);
             entityManager.getTransaction().commit();
-        }catch(Exception ex){
-            log.error("+++++++++++++++++ " + ex.toString());
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
     }
@@ -72,16 +67,16 @@ public class LotIntegration implements LotDao {
     }
 
     @Override
-    public List<Lot> getAllLots(){
-       List<Lot> listOfEmailDomains = new ArrayList<Lot>();
+    public List<Lot> getAllLots() {
+        List<Lot> listOfEmailDomains = new ArrayList<Lot>();
         try {
             entityManager.getTransaction().begin();
             CriteriaQuery<Lot> criteria = entityManager.getCriteriaBuilder().createQuery(Lot.class);
             criteria.select(criteria.from(Lot.class));
             listOfEmailDomains = entityManager.createQuery(criteria).getResultList();
             entityManager.getTransaction().commit();
-        }catch (Exception ex){
-            log.error("------------------------" + ex);
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
         return listOfEmailDomains;

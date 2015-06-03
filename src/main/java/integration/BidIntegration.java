@@ -2,46 +2,48 @@ package integration;
 
 import entity.bid.Bid;
 import entity.lot.Lot;
-
+import entity.lot.State;
+import integration.jpa.EntityManagerUtil;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Andriy on 20.05.2015.
- */
 
 public class BidIntegration implements BidDao {
     private static Logger log = Logger.getLogger(BidIntegration.class);
 
-    private LotIntegration lot = new LotIntegration();
+
+    private LotIntegration lotIntegration = new LotIntegration();
 
 
-    private EntityManager entityManager = Persistence.createEntityManagerFactory("Eclipselink_JPA").createEntityManager();
+    private EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
     @Override
-    public void addBid(double newPrice, String bidder, int lotId)throws Exception{
-              Lot lotForBid = lot.getLotById(lotId);
-          //  String lotOwner = lotForBid.getOwner();
-           // if((newPrice > getLastBiggestPriceWhichBid(lotId))&(bidder!=lotOwner)&(lotForBid.getState()== Status.active)) {
+    public void addBid(double newPrice, String bidder, int lotId) throws Exception {
+        Lot lotForBid = lotIntegration.getLotById(lotId);
+        try {
+            if (getLastBiggestPriceWhichBid(lotId, newPrice) & (lotForBid.getState() == State.active)) {
                 entityManager.getTransaction().begin();
                 entityManager.persist(new Bid(newPrice, bidder, lotId));
                 entityManager.getTransaction().commit();
-          //  }else{throw new Exception("Ставку зробити не можливо");}
+            } else {
+                throw new Exception("Cannot create bid");
+            }
+        }catch (Exception ex){
+            log.error("Exception" + ex);
+            entityManager.getTransaction().rollback();
+        }
     }
+
 
     @Override
     public List<Bid> getAllBidsOnLotByLotId(int lotId) {
         List<Bid> listOfBidsSomeLot = new ArrayList<Bid>();
-        Query query = entityManager.createNativeQuery("SELECT id, bidderName, dateBid, newPrice FROM bid WHERE lotId = " + lotId + ";", Bid.class);
+        Query query = entityManager.createNativeQuery("SELECT id, bidderName, dateBid, newPrice, lotId FROM bid WHERE lotId = " + lotId + ";", Bid.class);
         listOfBidsSomeLot = query.getResultList();
-        return  listOfBidsSomeLot;
+        return listOfBidsSomeLot;
     }
 
     @Override
@@ -49,12 +51,15 @@ public class BidIntegration implements BidDao {
         List<Bid> listOfAllBid = new ArrayList<Bid>();
         Query query = entityManager.createNativeQuery("SELECT id, bidderName, dateBid, newPrice FROM bid ;", Bid.class);
         listOfAllBid = query.getResultList();
-        return  listOfAllBid;
+        return listOfAllBid;
     }
 
-    private double getLastBiggestPriceWhichBid(int lotId){
-        return (Double)entityManager.createNativeQuery("SELECT MAX(newPrice) FROM bid where lotId = " + lotId + ";").getSingleResult();
-
+    private boolean getLastBiggestPriceWhichBid(int lotId, double newPrice) {
+        Double lastPrice = (Double) entityManager.createNativeQuery("SELECT MAX(newPrice) FROM bid where lotId = " + lotId + ";").getSingleResult();
+        if (lastPrice == null) {
+            return true;
+        }
+        return (newPrice > lastPrice);
     }
 
 }

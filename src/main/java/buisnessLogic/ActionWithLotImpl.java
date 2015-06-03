@@ -1,23 +1,25 @@
 package buisnessLogic;
 
 import entity.lot.Lot;
-
-import entity.lot.State;
 import integration.LotIntegration;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Andriy on 20.05.2015.
- */
 public class ActionWithLotImpl implements ActionWithLot {
+    private static Logger log = Logger.getLogger(LotIntegration.class);
+
 
     private LotIntegration lotIntegration = new LotIntegration();
 
     @Override
-    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) {
-        lotIntegration.addLot(lotName, finishDate, startPrice, description, owner, state, ownerId);
+    public void addLot(String lotName, Date finishDate, double startPrice, String description) {
+        try {
+            lotIntegration.addLot(lotName, finishDate, startPrice, description);
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
+        }
     }
 
     @Override
@@ -27,16 +29,25 @@ public class ActionWithLotImpl implements ActionWithLot {
 
     @Override
     public void deleteLot(int id) {
-        lotIntegration.deleteLot(id);
+        try {
+            lotIntegration.deleteLot(id);
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
+        }
     }
 
     @Override
     public void canceledLot(int id) {
-        lotIntegration.canceledLot(id);
+        try {
+            lotIntegration.canceledLot(id);
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
+        }
     }
 
     @Override
-   public List<Lot> getAllLots(){
+    public List<Lot> getAllLots() {
         return lotIntegration.getAllLots();
     }
+
 }

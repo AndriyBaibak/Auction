@@ -2,7 +2,6 @@ package service;
 
 import buisnessLogic.ActionWithLotImpl;
 import entity.lot.Lot;
-import entity.lot.State;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -11,15 +10,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Andriy on 26.05.2015.
- */
 public class LotServiceImpl implements LotService {
     private static Logger log = Logger.getLogger(LotServiceImpl.class);
 
-
     private ActionWithLotImpl actionWithLot = new ActionWithLotImpl();
-
 
     @Override
     public Lot getLotById(int id) {
@@ -27,14 +21,22 @@ public class LotServiceImpl implements LotService {
     }
 
     @Override
-    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) throws ParseException, SchedulerException {
-        actionWithLot.addLot(lotName, finishDate, startPrice, description, owner, state, ownerId);
-        setDeadlineLot(new Lot(lotName, finishDate, startPrice, description, owner, state, ownerId));
+    public void addLot(String lotName, Date finishDate, double startPrice, String description) throws ParseException, SchedulerException {
+        try {
+            actionWithLot.addLot(lotName, finishDate, startPrice, description);
+            setDeadlineLot(new Lot(lotName, finishDate, startPrice, description));
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
+        }
     }
 
     @Override
     public void deleteLot(int id) {
-        actionWithLot.deleteLot(id);
+        try {
+            actionWithLot.deleteLot(id);
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
+        }
     }
 
     @Override
@@ -44,8 +46,13 @@ public class LotServiceImpl implements LotService {
 
     @Override
     public void canceledLot(int id) {
-        actionWithLot.canceledLot(id);
+        try {
+            actionWithLot.canceledLot(id);
+        } catch (Exception ex) {
+            log.error("Exception" + ex);
+        }
     }
+
     private void setDeadlineLot(Lot lot) throws ParseException, SchedulerException {
         JobDetail job = JobBuilder.newJob(SoldLotJob.class)
                 .withIdentity(lot.getLotName(), lot.getDescription()).build();
@@ -60,4 +67,5 @@ public class LotServiceImpl implements LotService {
         scheduler.start();
         scheduler.scheduleJob(job, trigger);
     }
+
 }

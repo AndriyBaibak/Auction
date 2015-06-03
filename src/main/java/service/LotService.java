@@ -1,7 +1,6 @@
 package service;
 
 import entity.lot.Lot;
-import entity.lot.State;
 import org.quartz.SchedulerException;
 
 import javax.jws.WebMethod;
@@ -19,7 +18,7 @@ public interface LotService {
     public Lot getLotById(int id);
 
     @WebMethod
-    public void addLot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) throws ParseException, SchedulerException;
+    public void addLot(String lotName, Date finishDate, double startPrice, String description) throws ParseException, SchedulerException;
 
     @WebMethod
     public void deleteLot(int id);

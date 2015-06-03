@@ -1,14 +1,14 @@
 package entity.bid;
 
+import org.apache.log4j.Logger;
+
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by Andriy on 19.05.2015.
- */
 @Entity
 @Table
 public class Bid {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -18,7 +18,8 @@ public class Bid {
     private String bidderName;
     private int lotId;
 
-    public Bid(){}
+    public Bid(){
+    }
 
     public Bid(double newPrice, String bidderName, int lotId ){
         this.newPrice = newPrice;
@@ -26,18 +27,28 @@ public class Bid {
         this.bidderName = bidderName;
         this.dateBid = new Date();
     }
-    public Bid(int id, double newPrice, String bidderName, Date dateBid ){
+    public Bid(int id, double newPrice, String bidderName, Date dateBid,int lotId ){
+        this.id = id;
         this.newPrice = newPrice;
         this.bidderName = bidderName;
         this.dateBid = dateBid;
+        this.lotId = lotId;
     }
 
-    public int getId() {
+   public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+   public int getLotId() {
+        return lotId;
+    }
+
+    public void setLotId(int lotId) {
+        this.lotId = lotId;
     }
 
     public double getNewPrice() {

@@ -1,16 +1,12 @@
 package entity.lot;
 
+import org.apache.log4j.Logger;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
-/**
- * Created by Andriy on 19.05.2015.
- */
 @Entity
 @Table
 public class Lot implements Serializable, Cloneable {
@@ -28,19 +24,20 @@ public class Lot implements Serializable, Cloneable {
     private State state;
     private int ownerId;
     private String remainingTime;
-    private transient SimpleDateFormat sp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     public Lot(){}
 
-    public Lot(String lotName, Date finishDate, String startPrice, String description){
-        this.lotName = lotName;
-        this.finishDate = finishDate;
-        this.startPrice = Double.parseDouble(startPrice);
-        this.description = description;
-
+    public Lot(String lotName, Date finishDate, double startPrice, String description){
+            this.lotName = lotName;
+            this.finishDate = finishDate;
+            this.startPrice = startPrice;
+            this.description = description;
+            this.owner = "admin";
+            this.state = State.active;
+            this.ownerId = 777;
+            this.remainingTime = Util.defineRemainingTime(new Date(), getFinishDate());
     }
     public Lot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) throws ParseException {
-
         this.lotName = lotName;
         this.finishDate = finishDate;
         this.startPrice = startPrice;
@@ -51,6 +48,18 @@ public class Lot implements Serializable, Cloneable {
         this.remainingTime = Util.defineRemainingTime(new Date(),getFinishDate());
 
     }
+    public Lot(int id , String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId, String remainingTime) throws ParseException {
+        this.id = id;
+        this.lotName = lotName;
+        this.finishDate = finishDate;
+        this.startPrice = startPrice;
+        this.description = description;
+        this.owner = owner;
+        this.ownerId = ownerId;
+        this.state = state;
+        this.remainingTime = Util.defineRemainingTime(new Date(),getFinishDate());
+    }
+
 
     public String getLotName() {
         return lotName;
@@ -114,6 +123,14 @@ public class Lot implements Serializable, Cloneable {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public void setRemainingTime(String remainingTime) {
+        this.remainingTime = remainingTime;
+    }
+
+    public String getRemainingTime() {
+        return remainingTime;
     }
 
     @Override
