@@ -5,6 +5,7 @@ import org.quartz.SchedulerException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by Andriy on 26.05.2015.
  */
 @WebService
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
 public interface LotService {
     @WebMethod
     public Lot getLotById(int id);

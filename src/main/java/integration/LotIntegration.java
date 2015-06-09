@@ -68,7 +68,7 @@ public class LotIntegration implements LotDao {
 
     @Override
     public List<Lot> getAllLots() {
-        List<Lot> listOfEmailDomains = new ArrayList<Lot>();
+        List<Lot> listOfEmailDomains = null;
         try {
             entityManager.getTransaction().begin();
             CriteriaQuery<Lot> criteria = entityManager.getCriteriaBuilder().createQuery(Lot.class);
@@ -79,6 +79,7 @@ public class LotIntegration implements LotDao {
             log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
+        log.error("-------------" + listOfEmailDomains.getClass());
         return listOfEmailDomains;
     }
 }

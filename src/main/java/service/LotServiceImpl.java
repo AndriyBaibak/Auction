@@ -6,10 +6,12 @@ import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import javax.jws.WebService;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+@WebService(endpointInterface = "service.LotService")
 public class LotServiceImpl implements LotService {
     private static Logger log = Logger.getLogger(LotServiceImpl.class);
 

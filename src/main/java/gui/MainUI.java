@@ -1,9 +1,11 @@
 package gui;
 
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItemContainer;
+
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -18,8 +20,6 @@ import service.LotServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
 
-@Title("Auction")
-@Theme("valo")
 public class MainUI extends UI {
     private static Logger log = Logger.getLogger(MainUI.class);
     Grid gridLots = new Grid("Lots");
@@ -37,6 +37,7 @@ public class MainUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
+       // setContent(new LoginWindow());
         try {
             configureComponents();
         } catch (Exception e) {
@@ -182,9 +183,8 @@ public class MainUI extends UI {
 
     }
 
-    @WebServlet(urlPatterns = "/*")
+   /*@WebServlet(urlPatterns = {"/*" , "/VAADIN/*"})
     @VaadinServletConfiguration(ui = MainUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
-    }
-
+    }*/
 }
