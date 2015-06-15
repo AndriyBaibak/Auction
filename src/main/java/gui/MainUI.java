@@ -3,7 +3,6 @@ package gui;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItemContainer;
-
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -19,7 +18,7 @@ import service.LotServiceImpl;
 import javax.servlet.annotation.WebServlet;
 //@HandlerChain(file = "handler-inject-chain.xml")
 public class MainUI extends UI {
-    public static final String NAME = "";
+
 
     private static Logger log = Logger.getLogger(MainUI.class);
     Grid gridLots = new Grid("Lots");
@@ -32,6 +31,7 @@ public class MainUI extends UI {
     BidService bidService = new BidServiceImpl();
     AddLotForm addLorForm = new AddLotForm();
     AddBidForm addBidForm = new AddBidForm();
+    LoginWindow loginWindow = new LoginWindow();
 
     Lot lotForDetails;
 
@@ -51,7 +51,7 @@ public class MainUI extends UI {
         newLot.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(addLorForm.getAddLotSubWindow());
+                getCurrent().addWindow(addLorForm.getAddLotSubWindow());
 
             }
         });
@@ -155,6 +155,8 @@ public class MainUI extends UI {
         mainLayout.addComponent(body);
         setContent(mainLayout);
 
+        getCurrent().addWindow(loginWindow.getAddFormWindow());
+
 
     }
 
@@ -181,6 +183,9 @@ public class MainUI extends UI {
         gridLots.setContainerDataSource(new BeanItemContainer<Lot>(
                 Lot.class, lotService.getAllLots()));
 
+    }
+        public static MainUI getCurrent(){
+        return  (MainUI) UI.getCurrent();
     }
 
    @WebServlet(urlPatterns = {"/*" , "/VAADIN/*"})

@@ -1,5 +1,6 @@
 package gui;
 
+
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.*;
 import entity.lot.Lot;
@@ -35,7 +36,8 @@ public class AddLotForm extends Window implements Button.ClickListener {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 try {
-                    service.addLot(name.getValue(), "date.getValue()", Double.parseDouble(price.getValue()), description.getDescription());
+                    new LotServiceImpl().addLot(name.getValue(), "date.getValue()", Double.parseDouble(price.getValue()), description.getDescription());
+                    MainUI.getCurrent().refreshLots();
                 } catch (Exception e) {
                     log.error("Exception" + e);
                 }

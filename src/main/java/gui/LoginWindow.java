@@ -1,30 +1,26 @@
 package gui;
 
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.Title;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 
-/**
- * Created by Andriy on 09.06.2015.
- */
-
-@Title("Auction")
-@Theme("reindeer")
-public class LoginWindow extends UI
+public class LoginWindow extends CustomLayout
 {
     private static Logger log = Logger.getLogger(LoginWindow.class);
 
+    public Window getAddFormWindow() {
+        return addFormWindow;
+    }
+
+    private Window addFormWindow = new Window();
     private Button btnLogin = new Button("Login");
     private TextField login = new TextField ( "Username");
     private PasswordField password = new PasswordField ( "Password");
 
 
-    @Override
-    protected void init(VaadinRequest request) {
+
+   public  LoginWindow() {
         try {
             configureComponents();
         } catch (Exception e) {
@@ -40,24 +36,22 @@ public class LoginWindow extends UI
         btnLogin.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                log.error("-----------------------");
-                getUI().getNavigator().navigateTo(MainUI.NAME);
+                addFormWindow.close();
             }
         });
 
     }
     private void buildLayout() {
-        Window mainWindow = new Window();
         VerticalLayout verticalLayout = new VerticalLayout();
 
         verticalLayout.addComponent(login);
         verticalLayout.addComponent(password);
         verticalLayout.addComponent(btnLogin);
         verticalLayout.setStyleName(Reindeer.LAYOUT_BLUE);
-        mainWindow.setContent(verticalLayout);
+        addFormWindow.setContent(verticalLayout);
 
-        mainWindow.center();
-        addWindow(mainWindow);
+        addFormWindow.center();
+
 
    }
 

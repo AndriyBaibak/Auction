@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserIntegration implements UserDao {
     private static Logger log = Logger.getLogger(UserIntegration.class);
@@ -30,7 +32,9 @@ public class UserIntegration implements UserDao {
         try {
             entityManager.getTransaction().begin();
             Query query = entityManager.createNativeQuery("SELECT password FROM user where login = " + login + ";");
-            userPassword = query.getParameterValue(0).toString();
+            List<String> list = new ArrayList<String>();
+            list = query.getResultList();
+            userPassword = list.get(0);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             log.error("Exception" + ex);

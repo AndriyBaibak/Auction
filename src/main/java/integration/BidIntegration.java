@@ -3,6 +3,7 @@ package integration;
 import entity.bid.Bid;
 import entity.lot.Lot;
 import entity.lot.State;
+import integration.jpa.EntityManagerUtil;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -17,7 +18,7 @@ public class BidIntegration implements BidDao {
     private LotIntegration lotIntegration = new LotIntegration();
 
 
-    private EntityManager entityManager = null;
+    private EntityManager entityManager= EntityManagerUtil.getEntityManager();
 
     @Override
     public void addBid(double newPrice, String bidder, int lotId) throws Exception {

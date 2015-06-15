@@ -16,7 +16,7 @@ public class LotIntegration implements LotDao {
     private static Logger log = Logger.getLogger(LotIntegration.class);
 
     private EntityManager entityManager = EntityManagerUtil.getEntityManager();
-    private ArrayList<Lot> arrayList = new ArrayList<Lot>();
+   // private ArrayList<Lot> arrayList = new ArrayList<Lot>();
 
     @Override
     public void addLot(String lotName, Date finishDate, double startPrice, String description)throws Exception{
@@ -80,7 +80,6 @@ public class LotIntegration implements LotDao {
             log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
-        log.error("-------------" + listOfEmailDomains.getClass());
         return listOfEmailDomains;
     }
 }

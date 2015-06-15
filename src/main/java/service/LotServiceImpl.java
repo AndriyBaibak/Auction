@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @WebService(endpointInterface = "service.LotService")
-@HandlerChain(file = "handler-chain.xml")
+@HandlerChain(file = "handler-validation-chain.xml")
 public class LotServiceImpl implements LotService {
     private static Logger log = Logger.getLogger(LotServiceImpl.class);
 
@@ -26,9 +26,9 @@ public class LotServiceImpl implements LotService {
 
     @Override
     public void addLot(String lotName, String finishDate, double startPrice, String description) throws ParseException, SchedulerException {
-        try {
+        try {log.error("00000000000000000000000000000");
             actionWithLot.addLot(lotName, new Date(), startPrice, description);
-            setDeadlineLot(new Lot(lotName, new Date(), startPrice, description));
+           // setDeadlineLot(new Lot(lotName, new Date(), startPrice, description));
         } catch (Exception ex) {
             log.error("Exception" + ex);
         }
