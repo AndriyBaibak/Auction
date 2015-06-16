@@ -51,7 +51,11 @@ public class MainUI extends UI {
         newLot.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getCurrent().addWindow(addLorForm.getAddLotSubWindow());
+                try {
+                    new ServiceForVaadin().createRequest();
+                } catch (Exception e) {
+                        e.printStackTrace();                }
+                // getCurrent().addWindow(addLorForm.getAddLotSubWindow());
 
             }
         });
@@ -188,7 +192,7 @@ public class MainUI extends UI {
         return  (MainUI) UI.getCurrent();
     }
 
-   @WebServlet(urlPatterns = {"/*" , "/VAADIN/*"})
+    @WebServlet(urlPatterns = {"/*" , "/VAADIN/*"})
     @VaadinServletConfiguration(ui = MainUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
     }

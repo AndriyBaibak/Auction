@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime'
+            version='2.0'>
+    <endpoint name="LotServiceImpl"
+              implementation="service.LotServiceImpl"
+              url-pattern="/lot">
+        <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+            <handler-chain>
+                <handler>
+                    <handler-class>service.AuthenticationHandlerFromSoapHeaders</handler-class>
+                </handler>
+            </handler-chain>
+        </handler-chains>
+    </endpoint>
+</endpoints>

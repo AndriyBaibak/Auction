@@ -19,7 +19,11 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 import javax.xml.ws.soap.SOAPFaultException;
 
 public class AuthenticationHandlerFromSoapHeaders implements SOAPHandler<SOAPMessageContext>{
+
     private static Logger log = Logger.getLogger(AuthenticationHandlerFromSoapHeaders.class);
+    public AuthenticationHandlerFromSoapHeaders(){
+        log.error("_--------------______------------33333333333_______________");
+    }
     UserServiceImpl userService = new UserServiceImpl();
     @Override
     public boolean handleMessage(SOAPMessageContext context) {

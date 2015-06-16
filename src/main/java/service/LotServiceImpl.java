@@ -12,8 +12,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-@WebService(endpointInterface = "service.LotService")
-@HandlerChain(file = "handler-validation-chain.xml")
+@WebService(serviceName = "LotServiceImpl",
+        portName="EntityPort",
+        endpointInterface = "service.LotService")
 public class LotServiceImpl implements LotService {
     private static Logger log = Logger.getLogger(LotServiceImpl.class);
 
