@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LotDao {
 
-    public void addLot(String lotName, Date finishDate, double startPrice, String description) throws Exception;
+    public void addLot(Lot lotForSaving);
 
     public Lot getLotById(int id);
 

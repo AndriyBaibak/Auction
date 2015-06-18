@@ -16,7 +16,7 @@ public interface LotService {
     public Lot getLotById(int id);
 
     @WebMethod
-    public void addLot(String lotName, String finishDate, double startPrice, String description) throws ParseException, SchedulerException;
+    public void addLot(Lot lotForSaving) throws ParseException, SchedulerException;
 
     @WebMethod
     public void deleteLot(int id);

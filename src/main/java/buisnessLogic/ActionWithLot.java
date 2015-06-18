@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface ActionWithLot {
-    public void addLot(String lotName, Date finishDate, double startPrice, String description);
+    public void addLot(Lot lotForSaving);
 
     public Lot getLotById(int id);
 

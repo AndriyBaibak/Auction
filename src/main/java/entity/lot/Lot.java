@@ -1,5 +1,7 @@
 package entity.lot;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -7,20 +9,28 @@ import java.util.Date;
 
 @Entity
 @Table
+@XStreamAlias("Lot")
 public class Lot implements Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XStreamAlias("id")
     private int id;
+    @XStreamAlias("lotName")
     private String lotName;
+    @XStreamAlias("finishDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date finishDate;
+    @XStreamAlias("description")
     private String description;
+    @XStreamAlias("startPrice")
     private double startPrice;
+    @XStreamAlias("owner")
     private String owner;
+    @XStreamAlias("state")
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private State state;
-    private int ownerId;
+    @XStreamAlias("remainingTime")
     private String remainingTime;
 
     public Lot(){}
@@ -32,31 +42,28 @@ public class Lot implements Serializable, Cloneable {
             this.description = description;
             this.owner = "admin";
             this.state = State.active;
-            this.ownerId = 777;
             this.remainingTime = Util.defineRemainingTime(new Date(), getFinishDate());
     }
-    public Lot(String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId) throws ParseException {
+    public Lot(String lotName, Date finishDate, double startPrice, String description, String owner) throws ParseException {
         this.lotName = lotName;
         this.finishDate = finishDate;
         this.startPrice = startPrice;
         this.description = description;
         this.owner = owner;
-        this.ownerId = ownerId;
-        this.state = state;
+        this.state = State.active;
         this.remainingTime = Util.defineRemainingTime(new Date(),getFinishDate());
 
     }
-    public Lot(int id , String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId, String remainingTime) throws ParseException {
+   /* public Lot(int id , String lotName, Date finishDate, double startPrice, String description, String owner, State state, int ownerId, String remainingTime) throws ParseException {
         this.id = id;
         this.lotName = lotName;
         this.finishDate = finishDate;
         this.startPrice = startPrice;
         this.description = description;
         this.owner = owner;
-        this.ownerId = ownerId;
         this.state = state;
         this.remainingTime = Util.defineRemainingTime(new Date(),getFinishDate());
-    }
+    }*/
 
 
     public String getLotName() {
@@ -115,14 +122,6 @@ public class Lot implements Serializable, Cloneable {
         this.state = state;
     }
 
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
     public void setRemainingTime(String remainingTime) {
         this.remainingTime = remainingTime;
     }
@@ -141,7 +140,6 @@ public class Lot implements Serializable, Cloneable {
         sb.append(", startPrice=").append(startPrice);
         sb.append(", owner='").append(owner).append('\'');
         sb.append(", state=").append(state);
-        sb.append(", ownerId=").append(ownerId);
         sb.append(", remainingTime=").append(remainingTime);
         sb.append('}');
         return sb.toString();

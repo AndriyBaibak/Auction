@@ -10,8 +10,8 @@ public class ActionWithBidImpl implements ActionWithBid {
     private BidIntegration bidIntegration = new BidIntegration();
 
     @Override
-    public void addBid(double newPrice, String bidder, int lotId) throws Exception {
-        bidIntegration.addBid(newPrice, bidder, lotId);
+    public void addBid(Bid bidOnLot) throws Exception {
+        bidIntegration.addBid(bidOnLot);
     }
 
     @Override
@@ -19,10 +19,6 @@ public class ActionWithBidImpl implements ActionWithBid {
         return bidIntegration.getAllBidsOnLotByLotId(lotId);
     }
 
-    @Override
-    public List<Bid> getAllBids() {
-        return bidIntegration.getAllBids();
-    }
 
 
 }

@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.soap.Node;
@@ -21,43 +23,35 @@ import javax.xml.ws.soap.SOAPFaultException;
 public class AuthenticationHandlerFromSoapHeaders implements SOAPHandler<SOAPMessageContext>{
 
     private static Logger log = Logger.getLogger(AuthenticationHandlerFromSoapHeaders.class);
-    public AuthenticationHandlerFromSoapHeaders(){
-        log.error("_--------------______------------33333333333_______________");
-    }
+
     UserServiceImpl userService = new UserServiceImpl();
     @Override
     public boolean handleMessage(SOAPMessageContext context) {
-        log.error("+++++++++++++++++++");
-        Boolean isRequest = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+        try {
+            log.error("===============" + context.getMessage().toString());
+            SOAPMessage s = context.getMessage();
+            s.writeTo(System.out);
 
-        if(!isRequest){
+            Map http_headers = (Map) context.get(MessageContext.HTTP_REQUEST_HEADERS);
+            List userList = (List) http_headers.get("Login");
+            List passList = (List) http_headers.get("Password");
 
-            try{
-                SOAPMessage soapMsg = context.getMessage();
-                SOAPEnvelope soapEnv = soapMsg.getSOAPPart().getEnvelope();
-                SOAPBody soapBody=soapEnv.getBody();
-                SOAPHeader soapHeader = soapEnv.getHeader();
-               /* Iterator iterator2 = soapBody.getChildElements(new QName("arg1"));
-                String desc = ((Node)iterator2.next()).getValue();*/
+            String login = "";
+            String password = "";
 
-
-                if (soapHeader == null){
-                    soapHeader = soapEnv.addHeader();
-                    generateSOAPErrMessage(soapMsg, "No SOAP header.");
-                }
-                Iterator iterator = soapHeader.getChildElements(new QName("password"));
-                String password = ((Node)iterator.next()).getValue();
-                iterator = soapHeader.getChildElements(new QName("login"));
-                String login = ((Node)iterator.next()).getValue();
-                if(!password.equals((userService.getUserPasswordByLogin(login)))){
-                    generateSOAPErrMessage(soapMsg, "User with this userName and password are not registered");
-                }
-                soapMsg.writeTo(System.out);
-            }catch(SOAPException e){
-                log.error(e);
-            }catch(IOException e){
-                log.error(e);
+            if (userList != null) {
+                login = userList.get(0).toString();
             }
+
+            if (passList != null) {
+                password = passList.get(0).toString();
+            }
+                String pass = userService.getUserPasswordByLogin(login);
+           if (!password.equals(pass)) {
+               return false;
+           }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         return true;

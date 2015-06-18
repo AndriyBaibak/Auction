@@ -12,16 +12,8 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String userName;
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    private String role;
 
     public User(){}
 
@@ -30,7 +22,7 @@ public class User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = "ROLE_USER";
+        this.userName = (new StringBuilder(firstName).append(" ").append(lastName)).toString();
     }
 
     public int getId() {
@@ -83,5 +75,13 @@ public class User {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

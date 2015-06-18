@@ -27,13 +27,6 @@ public class Bid {
         this.bidderName = bidderName;
         this.dateBid = new Date();
     }
-    public Bid(int id, double newPrice, String bidderName, Date dateBid,int lotId ){
-        this.id = id;
-        this.newPrice = newPrice;
-        this.bidderName = bidderName;
-        this.dateBid = dateBid;
-        this.lotId = lotId;
-    }
 
    public int getId() {
         return id;

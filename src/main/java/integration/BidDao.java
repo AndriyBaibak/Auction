@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface BidDao {
 
-    public void addBid(double newPrice, String bidder, int lotId) throws Exception;
+    public void addBid(Bid bidOnLot) throws Exception;
 
     public List<Bid> getAllBidsOnLotByLotId(int lotId);
 
-    public List<Bid> getAllBids();
+
 
 
 }

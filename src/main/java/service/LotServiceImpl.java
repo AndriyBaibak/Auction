@@ -6,16 +6,24 @@ import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import javax.annotation.Resource;
+import javax.annotation.Resources;
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @WebService(serviceName = "LotServiceImpl",
         portName="EntityPort",
         endpointInterface = "service.LotService")
 public class LotServiceImpl implements LotService {
+    @Resource
+    WebServiceContext webServiceContext;
+
     private static Logger log = Logger.getLogger(LotServiceImpl.class);
 
     private ActionWithLotImpl actionWithLot = new ActionWithLotImpl();
@@ -26,13 +34,14 @@ public class LotServiceImpl implements LotService {
     }
 
     @Override
-    public void addLot(String lotName, String finishDate, double startPrice, String description) throws ParseException, SchedulerException {
-        try {log.error("00000000000000000000000000000");
-            actionWithLot.addLot(lotName, new Date(), startPrice, description);
-           // setDeadlineLot(new Lot(lotName, new Date(), startPrice, description));
-        } catch (Exception ex) {
-            log.error("Exception" + ex);
-        }
+    public void addLot(Lot lotForSaving) throws ParseException, SchedulerException {
+            try {
+                actionWithLot.addLot(lotForSaving);
+
+            } catch (Exception ex) {
+                log.error("Exception" + ex);
+            }
+
     }
 
     @Override
@@ -58,19 +67,6 @@ public class LotServiceImpl implements LotService {
         }
     }
 
-    private void setDeadlineLot(Lot lot) throws ParseException, SchedulerException {
-        JobDetail job = JobBuilder.newJob(SoldLotJob.class)
-                .withIdentity(lot.getLotName(), lot.getDescription()).build();
 
-        Trigger trigger = TriggerBuilder
-                .newTrigger()
-                .withIdentity(lot.getLotName(), lot.getDescription())
-                .startAt(lot.getFinishDate())
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule()).build();
-        Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.getContext().put("lot", lot);
-        scheduler.start();
-        scheduler.scheduleJob(job, trigger);
-    }
 
 }

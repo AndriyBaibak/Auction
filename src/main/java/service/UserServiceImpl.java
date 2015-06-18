@@ -5,20 +5,23 @@ import entity.user.User;
 
 import javax.jws.WebService;
 
-/**
- * Created by Andriy on 26.05.2015.
- */
-@WebService(endpointInterface = "service.UserService")
+@WebService(serviceName = "UserServiceImpl",
+        portName="EntityPort",
+        endpointInterface = "service.UserService")
 public class UserServiceImpl implements UserService {
     private ActionWithUserImpl actionWithUser = new ActionWithUserImpl();
 
     @Override
-    public void registration(String login, String password, String firstName, String lastName) {
-        actionWithUser.registration(login, password, firstName, lastName);
+    public void registration(User user) {
+        actionWithUser.registration(user);
     }
 
     @Override
     public String getUserPasswordByLogin(String login) {
         return actionWithUser.getUserPasswordByLogin(login);
+    }
+    @Override
+    public String getUserNameByUserLogin(String login){
+        return actionWithUser.getUserNameByUserLogin(login);
     }
 }

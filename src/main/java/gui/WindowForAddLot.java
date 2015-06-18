@@ -5,23 +5,21 @@ import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.*;
 import entity.lot.Lot;
 import org.apache.log4j.Logger;
-import service.LotService;
-import service.LotServiceImpl;
 
-public class AddLotForm extends Window implements Button.ClickListener {
-    private static Logger log = Logger.getLogger(AddLotForm.class);
+public class WindowForAddLot extends Window implements Button.ClickListener {
+    private static Logger log = Logger.getLogger(WindowForAddLot.class);
 
-    Window addLotSubWindow = new Window();
+    //Window addLotSubWindow = new Window();
     Button add = new Button("ok");
     Button cancel = new Button("cancel");
     TextField name = new TextField("Name");
     DateField date = new DateField("date");
     TextField description = new TextField("Description");
     TextField price = new TextField("Price");
-    LotService service = new LotServiceImpl();
     Lot lot = new Lot();
 
-    public AddLotForm() {
+    ServiceForVaadin serviceForVaadin;
+    public WindowForAddLot() {
         configureComponents();
         buildAddWindow();
     }
@@ -36,8 +34,10 @@ public class AddLotForm extends Window implements Button.ClickListener {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 try {
-                    new LotServiceImpl().addLot(name.getValue(), "date.getValue()", Double.parseDouble(price.getValue()), description.getDescription());
-                    MainUI.getCurrent().refreshLots();
+                    Lot lotforSaving = new Lot(name.getValue(), date.getValue(),Double.parseDouble(price.getValue()), description.getValue(), MainWindow.owner);
+                    MainWindow.serviceForVaadin.addLot(lotforSaving);
+                    MainUI.getMainWindow().refreshLots();
+                    close();
                 } catch (Exception e) {
                     log.error("Exception" + e);
                 }
@@ -57,16 +57,14 @@ public class AddLotForm extends Window implements Button.ClickListener {
         HorizontalLayout buttons = new HorizontalLayout(add, cancel);
         VerticalLayout body = new VerticalLayout(inputTextFields, buttons);
         FormLayout addForm = new FormLayout(body);
-        addLotSubWindow.setContent(body);
-        addLotSubWindow.center();
+        setContent(body);
+        center();
     }
 
     @Override
     public void buttonClick(Button.ClickEvent clickEvent) {
     }
 
-    public Window getAddLotSubWindow() {
-        return addLotSubWindow;
-    }
+
 
 }

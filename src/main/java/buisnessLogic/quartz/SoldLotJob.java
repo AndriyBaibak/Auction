@@ -1,4 +1,4 @@
-package service;
+package buisnessLogic.quartz;
 
 import entity.bid.Bid;
 import entity.lot.Lot;
@@ -9,9 +9,6 @@ import org.quartz.*;
 
 import java.util.List;
 
-/**
- * Created by Andriy on 21.05.2015.
- */
 public class SoldLotJob implements Job {
     private BidIntegration bidIntegration = new BidIntegration();
 

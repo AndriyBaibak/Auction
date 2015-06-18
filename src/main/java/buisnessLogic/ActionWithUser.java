@@ -3,8 +3,11 @@ package buisnessLogic;
 import entity.user.User;
 
 public interface ActionWithUser {
-    public void registration(String login, String password, String firstName, String lastName);
+    public void registration(User user);
 
     public String getUserPasswordByLogin(String login);
+
+    public String getUserNameByUserLogin(String login);
+
 
 }

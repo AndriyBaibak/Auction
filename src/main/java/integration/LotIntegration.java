@@ -19,11 +19,10 @@ public class LotIntegration implements LotDao {
    // private ArrayList<Lot> arrayList = new ArrayList<Lot>();
 
     @Override
-    public void addLot(String lotName, Date finishDate, double startPrice, String description)throws Exception{
-        Lot lotForAdding = new Lot(lotName, finishDate, startPrice, description);
+    public void addLot(Lot lotForSaving){
        try {
             entityManager.getTransaction().begin();
-            entityManager.persist(lotForAdding);
+            entityManager.persist(lotForSaving);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             log.error("Exception" + ex);
@@ -60,7 +59,7 @@ public class LotIntegration implements LotDao {
 
     @Override
     public void canceledLot(int id) {
-        Lot lotForCanceled = getLotById(id);
+        Lot lotForCanceled = getLotById(id);//todo change on only owner may canceledLot
         lotForCanceled.setState(State.Cancelled);
         entityManager.getTransaction().begin();
         entityManager.merge(lotForCanceled);

@@ -5,6 +5,21 @@
               implementation="service.LotServiceImpl"
               url-pattern="/lot">
         <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+        <handler-chain>
+            <handler>
+                <handler-class>service.AuthenticationHandlerFromSoapHeaders</handler-class>
+            </handler>
+        </handler-chain>
+    </handler-chains>
+    </endpoint>
+    <endpoint name="UserServiceImpl"
+              implementation="service.UserServiceImpl"
+              url-pattern="/user">
+    </endpoint>
+    <endpoint name="BidServiceImpl"
+              implementation="service.BidServiceImpl"
+              url-pattern="/bid">
+        <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
             <handler-chain>
                 <handler>
                     <handler-class>service.AuthenticationHandlerFromSoapHeaders</handler-class>

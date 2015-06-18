@@ -4,22 +4,23 @@ import buisnessLogic.ActionWithBidImpl;
 import entity.bid.Bid;
 import org.apache.log4j.Logger;
 
+import javax.jws.WebService;
 import java.util.List;
 
-/**
- * Created by Andriy on 26.05.2015.
- */
+@WebService(serviceName = "BidServiceImpl",
+        portName="EntityPort",
+        endpointInterface = "service.BidService")
 public class BidServiceImpl implements BidService {
     private static Logger log = Logger.getLogger(BidServiceImpl.class);
 
     private ActionWithBidImpl actionWithBid = new ActionWithBidImpl();
 
     @Override
-    public void addBid(double newPrice, String bidder, int lotId) {
+    public void addBid(Bid bidOnLot) {
         try {
-            actionWithBid.addBid(newPrice, bidder, lotId);
+            actionWithBid.addBid(bidOnLot);
         } catch (Exception ex) {
-            log.error("--------------" + ex.toString());
+            log.error("Exception" + ex);
         }
 
     }
@@ -29,9 +30,6 @@ public class BidServiceImpl implements BidService {
         return actionWithBid.getAllBidsOnLotByLotId(lotId);
     }
 
-    @Override
-    public List<Bid> getAllBids() {
-        return actionWithBid.getAllBids();
-    }
+
 
 }

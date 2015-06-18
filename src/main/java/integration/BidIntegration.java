@@ -18,20 +18,20 @@ public class BidIntegration implements BidDao {
     private LotIntegration lotIntegration = new LotIntegration();
 
 
-    private EntityManager entityManager= EntityManagerUtil.getEntityManager();
+    private EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
     @Override
-    public void addBid(double newPrice, String bidder, int lotId) throws Exception {
-        Lot lotForBid = lotIntegration.getLotById(lotId);
+    public void addBid(Bid bidOnLot) throws Exception {
+        Lot lotForBid = lotIntegration.getLotById(bidOnLot.getLotId());
         try {
-            if (getLastBiggestPriceWhichBid(lotId, newPrice) & (lotForBid.getState() == State.active)) {
+            if (isNewPriceBiggest(bidOnLot.getLotId(), bidOnLot.getNewPrice()) & (lotForBid.getState() == State.active) & isNewPriceBiggestFroStartPrice(bidOnLot.getLotId(), bidOnLot.getNewPrice()) & (!(getOwnerOfThisLot(bidOnLot.getLotId()).equals(bidOnLot.getBidderName())))) {
                 entityManager.getTransaction().begin();
-                entityManager.persist(new Bid(newPrice, bidder, lotId));
+                entityManager.persist(bidOnLot);
                 entityManager.getTransaction().commit();
             } else {
                 throw new Exception("Cannot create bid");
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Exception" + ex);
             entityManager.getTransaction().rollback();
         }
@@ -40,21 +40,23 @@ public class BidIntegration implements BidDao {
 
     @Override
     public List<Bid> getAllBidsOnLotByLotId(int lotId) {
-        List<Bid> listOfBidsSomeLot = new ArrayList<Bid>();
+        List<Bid> listOfBidsSomeLot = null;
         Query query = entityManager.createNativeQuery("SELECT id, bidderName, dateBid, newPrice, lotId FROM bid WHERE lotId = " + lotId + ";", Bid.class);
         listOfBidsSomeLot = query.getResultList();
         return listOfBidsSomeLot;
     }
 
-    @Override
-    public List<Bid> getAllBids() {
-        List<Bid> listOfAllBid = new ArrayList<Bid>();
-        Query query = entityManager.createNativeQuery("SELECT id, bidderName, dateBid, newPrice FROM bid ;", Bid.class);
-        listOfAllBid = query.getResultList();
-        return listOfAllBid;
+    private String getOwnerOfThisLot(int lotId) {
+        String ownerOfCurrentLot = (String) entityManager.createNativeQuery("SELECT owner FROM lot where id = " + lotId + ";").getSingleResult();
+        return ownerOfCurrentLot;
     }
 
-    private boolean getLastBiggestPriceWhichBid(int lotId, double newPrice) {
+    private boolean isNewPriceBiggestFroStartPrice(int lotId, double newPrice) {
+        Double startPrice = (Double) entityManager.createNativeQuery("SELECT startPrice FROM lot where id = " + lotId + ";").getSingleResult();
+        return (newPrice > startPrice);
+    }
+
+    private boolean isNewPriceBiggest(int lotId, double newPrice) {
         Double lastPrice = (Double) entityManager.createNativeQuery("SELECT MAX(newPrice) FROM bid where lotId = " + lotId + ";").getSingleResult();
         if (lastPrice == null) {
             return true;
