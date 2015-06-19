@@ -20,6 +20,6 @@
 
     <servlet-mapping id="ws-entities-servlet-mapping">
         <servlet-name>EntityService</servlet-name>
-        <url-pattern>/lot</url-pattern>
+        <url-pattern>/Auction-1.0/lot</url-pattern>
     </servlet-mapping>
 </web-app>

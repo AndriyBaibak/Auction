@@ -33,13 +33,21 @@ public class WindowForAddBid extends Window implements Button.ClickListener {
     }
 
     public void buildBidSubWindow() {
-        HorizontalLayout bid = new HorizontalLayout(ok, textFieldForBid, $);
-        bid.setHeight("20%");
-        bid.setWidth("35%");
+        HorizontalLayout bid = new HorizontalLayout(ok);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(textFieldForBid);
+        HorizontalLayout horizontalLayout1 = new HorizontalLayout($);
+        horizontalLayout.setMargin(true);
+        HorizontalLayout main = new HorizontalLayout();
+        main.addComponent(bid);
+        main.addComponent(textFieldForBid);
+        main.addComponent($);
         /*bid.setComponentAlignment(ok, Alignment.MIDDLE_RIGHT);
         bid.setComponentAlignment(textFieldForBid, Alignment.MIDDLE_CENTER);
         bid.setComponentAlignment($, Alignment.MIDDLE_LEFT);*/
-        setContent(bid);
+        main.setMargin(true);
+        setHeight("25%");
+        setWidth("35%");
+        setContent(main);
         center();
     }
 
@@ -47,7 +55,6 @@ public class WindowForAddBid extends Window implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent clickEvent) {
     }
-
 
 
 }

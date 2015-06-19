@@ -9,13 +9,13 @@ import javax.jws.WebService;
         portName="EntityPort",
         endpointInterface = "service.UserService")
 public class UserServiceImpl implements UserService {
+
     private ActionWithUserImpl actionWithUser = new ActionWithUserImpl();
 
     @Override
     public void registration(User user) {
         actionWithUser.registration(user);
     }
-
     @Override
     public String getUserPasswordByLogin(String login) {
         return actionWithUser.getUserPasswordByLogin(login);

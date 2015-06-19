@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.text.ParseException;
 import java.util.List;
 
 public class ActionWithLotImpl implements ActionWithLot {
@@ -18,12 +17,8 @@ public class ActionWithLotImpl implements ActionWithLot {
 
     @Override
     public void addLot(Lot lotForSaving) {
-        try {
             lotIntegration.addLot(lotForSaving);
             setDeadlineLot(lotForSaving);
-        } catch (Exception ex) {
-            log.error("Exception" + ex);
-        }
     }
 
     @Override
@@ -33,20 +28,12 @@ public class ActionWithLotImpl implements ActionWithLot {
 
     @Override
     public void deleteLot(int id) {
-        try {
             lotIntegration.deleteLot(id);
-        } catch (Exception ex) {
-            log.error("Exception" + ex);
-        }
     }
 
     @Override
     public void canceledLot(int id) {
-        try {
             lotIntegration.canceledLot(id);
-        } catch (Exception ex) {
-            log.error("Exception" + ex);
-        }
     }
 
     @Override
@@ -54,7 +41,7 @@ public class ActionWithLotImpl implements ActionWithLot {
         return lotIntegration.getAllLots();
     }
 
-    private void setDeadlineLot(Lot lot) throws ParseException, SchedulerException {
+    private void setDeadlineLot(Lot lot) {
         JobDetail job = JobBuilder.newJob(SoldLotJob.class)
                 .withIdentity(lot.getLotName(), lot.getDescription()).build();
 
@@ -63,9 +50,14 @@ public class ActionWithLotImpl implements ActionWithLot {
                 .withIdentity(lot.getLotName(), lot.getDescription())
                 .startAt(lot.getFinishDate())
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()).build();
-        Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.getContext().put("lot", lot);
-        scheduler.start();
-        scheduler.scheduleJob(job, trigger);
+        Scheduler scheduler = null;
+        try {
+            scheduler = new StdSchedulerFactory().getScheduler();
+            scheduler.getContext().put("lot", lot);
+            scheduler.start();
+            scheduler.scheduleJob(job, trigger);
+        }catch (Exception ex){
+            log.error("Exception " + ex);
+        }
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ActionWithBid {
 
-    public void addBid(Bid bidOnLot) throws Exception;
+    public void addBid(Bid bidOnLot);
 
     public List<Bid> getAllBidsOnLotByLotId(int lotId);
 

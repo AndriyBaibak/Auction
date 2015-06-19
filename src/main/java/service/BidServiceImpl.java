@@ -11,19 +11,13 @@ import java.util.List;
         portName="EntityPort",
         endpointInterface = "service.BidService")
 public class BidServiceImpl implements BidService {
-    private static Logger log = Logger.getLogger(BidServiceImpl.class);
 
     private ActionWithBidImpl actionWithBid = new ActionWithBidImpl();
 
     @Override
     public void addBid(Bid bidOnLot) {
-        try {
             actionWithBid.addBid(bidOnLot);
-        } catch (Exception ex) {
-            log.error("Exception" + ex);
-        }
-
-    }
+      }
 
     @Override
     public List<Bid> getAllBidsOnLotByLotId(int lotId) {

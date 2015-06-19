@@ -8,20 +8,18 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BidIntegration implements BidDao {
+
     private static Logger log = Logger.getLogger(BidIntegration.class);
 
-
     private LotIntegration lotIntegration = new LotIntegration();
-
 
     private EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
     @Override
-    public void addBid(Bid bidOnLot) throws Exception {
+    public void addBid(Bid bidOnLot) {
         Lot lotForBid = lotIntegration.getLotById(bidOnLot.getLotId());
         try {
             if (isNewPriceBiggest(bidOnLot.getLotId(), bidOnLot.getNewPrice()) & (lotForBid.getState() == State.active) & isNewPriceBiggestFroStartPrice(bidOnLot.getLotId(), bidOnLot.getNewPrice()) & (!(getOwnerOfThisLot(bidOnLot.getLotId()).equals(bidOnLot.getBidderName())))) {

@@ -1,8 +1,11 @@
 package gui;
 
 
+import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ChameleonTheme;
 import com.vaadin.ui.themes.Reindeer;
+import entity.user.User;
 import org.apache.log4j.Logger;
 
 public class WindowForLogin extends Window implements Button.ClickListener {
@@ -21,29 +24,31 @@ public class WindowForLogin extends Window implements Button.ClickListener {
 
 
     private void configureComponents() {
+        login.addValidator(new BeanValidator(User.class, "login"));
+        password.addValidator(new BeanValidator(User.class, "password"));
         btnLogin.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 String loginForCheck = login.getValue();
                 String passwordForCheck = password.getValue();
-                ServiceForVaadin serviceForCurrentUserWithLoginAndPassword = new ServiceForVaadin(loginForCheck, passwordForCheck);
+                ServiceBeetwenVaadinAndJaxWs serviceForCurrentUserWithLoginAndPassword = new ServiceBeetwenVaadinAndJaxWs(loginForCheck, passwordForCheck);
                 String passwordOfRegisteredEarlyUser = serviceForCurrentUserWithLoginAndPassword.getUserPasswordByLogin(loginForCheck);
                 if (!(passwordForCheck).equals(passwordOfRegisteredEarlyUser)) {
-                    try {
                         close();
-                        throw new Exception("not valid password");
-
+                    try {
+                        throw new Exception("not valid password"); //todo вирішити проблему за роботою коду навіть якщо данні невірні
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 }
-                    try {
-                        MainUI.addMainWindow(loginForCheck, passwordOfRegisteredEarlyUser);
-                        MainUI.getMainWindow().refreshLots();
-                        close();
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                    }
+                try {
+                    MainUI.addMainWindow(loginForCheck, passwordOfRegisteredEarlyUser);
+                    MainUI.getMainWindow().refreshLots();
+                    close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
             }
         });
@@ -64,10 +69,13 @@ public class WindowForLogin extends Window implements Button.ClickListener {
 
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.addComponent(btnLogin);
+        btnLogin.setStyleName(ChameleonTheme.BUTTON_WIDE);//todo
         buttons.addComponent(registration);
         verticalLayout.addComponent(buttons);
-        verticalLayout.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
-        verticalLayout.setStyleName(Reindeer.LAYOUT_BLUE);
+        verticalLayout.setStyleName("backColor");
+        buttons.setMargin(true);
+        setStyleName("backColor");
+        verticalLayout.setMargin(true);
         setContent(verticalLayout);
 
         center();

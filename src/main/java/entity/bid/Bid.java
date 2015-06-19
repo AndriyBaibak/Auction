@@ -1,6 +1,6 @@
 package entity.bid;
 
-import org.apache.log4j.Logger;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,11 +11,16 @@ public class Bid {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XStreamAlias("id")
     private int id;
+    @XStreamAlias("newPrice")
     private double newPrice;
+    @XStreamAlias("dateBid")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateBid;
+    @XStreamAlias("bidderName")
     private String bidderName;
+    @XStreamAlias("lotId")
     private int lotId;
 
     public Bid(){

@@ -1,17 +1,28 @@
 package entity.user;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XStreamAlias("id")
     private int id;
+    @XStreamAlias("login")
+    @Size(min=3 , max=30)
     private String login;
+    @Size(min=6 , max=10)
+    @XStreamAlias("password")
     private String password;
+    @XStreamAlias("firstName")
     private String firstName;
+    @XStreamAlias("lastName")
     private String lastName;
+    @XStreamAlias("userName")
     private String userName;
 
 

@@ -16,7 +16,6 @@ public class LotIntegration implements LotDao {
     private static Logger log = Logger.getLogger(LotIntegration.class);
 
     private EntityManager entityManager = EntityManagerUtil.getEntityManager();
-   // private ArrayList<Lot> arrayList = new ArrayList<Lot>();
 
     @Override
     public void addLot(Lot lotForSaving){

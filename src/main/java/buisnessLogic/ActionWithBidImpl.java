@@ -10,7 +10,7 @@ public class ActionWithBidImpl implements ActionWithBid {
     private BidIntegration bidIntegration = new BidIntegration();
 
     @Override
-    public void addBid(Bid bidOnLot) throws Exception {
+    public void addBid(Bid bidOnLot){
         bidIntegration.addBid(bidOnLot);
     }
 

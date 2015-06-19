@@ -1,7 +1,5 @@
 package gui;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import entity.bid.Bid;
 import entity.lot.Lot;
 import entity.user.User;
@@ -16,10 +14,13 @@ import javax.xml.ws.Service;
 import javax.xml.ws.handler.MessageContext;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ServiceForVaadin {
-    private static Logger log = Logger.getLogger(ServiceForVaadin.class);
+public class ServiceBeetwenVaadinAndJaxWs {
+    private static Logger log = Logger.getLogger(ServiceBeetwenVaadinAndJaxWs.class);
     private String login = null;
     private String password = null;
 
@@ -28,7 +29,7 @@ public class ServiceForVaadin {
     private UserService userService = null;
 
 
-    public ServiceForVaadin(String login, String password) {
+    public ServiceBeetwenVaadinAndJaxWs(String login, String password) {
         this.login = login;
         this.password = password;
 
@@ -40,34 +41,34 @@ public class ServiceForVaadin {
     private void createLotService() {
         URL urlForLotWsdl = null;
         try {
-            urlForLotWsdl = new URL("http://localhost:8088/lot?wsdl");
+            urlForLotWsdl = new URL("http://localhost:8080/auction/lot?wsdl");
         } catch (MalformedURLException e) {
             log.error(e);
         }
         QName qnameForLot = new QName("http://service/", "LotServiceImpl");
         Service serviceForLot = Service.create(urlForLotWsdl, qnameForLot);
         lotService = serviceForLot.getPort(LotService.class);
-        addUserDataToSoapHeaders(lotService,"http://localhost:8088/lot?wsdl");
+        addUserDataToSoapHeaders(lotService, "http://localhost:8080/auction/lot?wsdl");
 
     }
 
     private void createBidService() {
         URL urlForBidWsdl = null;
         try {
-            urlForBidWsdl = new URL("http://localhost:8088/bid?wsdl");
+            urlForBidWsdl = new URL("http://localhost:8080/auction/bid?wsdl");
         } catch (MalformedURLException e) {
             log.error(e);
         }
         QName qnameForBid = new QName("http://service/", "BidServiceImpl");
         Service serviceForBid = Service.create(urlForBidWsdl, qnameForBid);
         bidService = serviceForBid.getPort(BidService.class);
-        addUserDataToSoapHeaders(bidService,"http://localhost:8088/bid?wsdl" );
+        addUserDataToSoapHeaders(bidService, "http://localhost:8080/auction/bid?wsdl");
     }
 
     private void createUserService() {
         URL urlForUserWsdl = null;
         try {
-            urlForUserWsdl = new URL("http://localhost:8088/user?wsdl");
+            urlForUserWsdl = new URL("http://localhost:8080/auction/user?wsdl");
         } catch (MalformedURLException e) {
             log.error(e);
         }
@@ -89,8 +90,7 @@ public class ServiceForVaadin {
         lotService.deleteLot(id);
     }
 
-    protected List<Lot> getAllLots() throws Exception {
-
+    protected List<Lot> getAllLots() {
         return lotService.getAllLots();
     }
 
@@ -98,27 +98,27 @@ public class ServiceForVaadin {
         lotService.canceledLot(id);
     }
 
-    protected void registration(User user){
+    protected void registration(User user) {
         userService.registration(user);
     }
 
-    protected String getUserPasswordByLogin(String login){
-       return userService.getUserPasswordByLogin(login);
+    protected String getUserPasswordByLogin(String login) {
+        return userService.getUserPasswordByLogin(login);
     }
 
-    protected void addBid(Bid bidOnLot){
+    protected void addBid(Bid bidOnLot) {
         bidService.addBid(bidOnLot);
     }
 
-    protected List<Bid> getAllBidsOnLotByLotId(int lotId){
+    protected List<Bid> getAllBidsOnLotByLotId(int lotId) {
         return bidService.getAllBidsOnLotByLotId(lotId);
     }
 
-    protected  String getUserNameByUserLogin(){
-       return userService.getUserNameByUserLogin(login);
+    protected String getUserNameByUserLogin() {
+        return userService.getUserNameByUserLogin(login);
     }
 
-    private void addUserDataToSoapHeaders(Object someService, String urlForWsdl){
+    private void addUserDataToSoapHeaders(Object someService, String urlForWsdl) {
         try {
             Map<String, Object> req_ctx = ((BindingProvider) someService).getRequestContext();
             req_ctx.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, urlForWsdl);
@@ -127,11 +127,10 @@ public class ServiceForVaadin {
             headers.put("Login", Collections.singletonList(login));
             headers.put("Password", Collections.singletonList(password));
             req_ctx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
 
 
 }

@@ -9,6 +9,7 @@ import javax.jws.soap.SOAPBinding;
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
 public interface UserService {
+
     @WebMethod
     public void registration(User user);
 

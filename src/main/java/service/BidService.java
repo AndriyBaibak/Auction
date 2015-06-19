@@ -8,6 +8,7 @@ import java.util.List;
 
 @WebService
 public interface BidService {
+
     @WebMethod
     public void addBid(Bid bidOnLot);
 

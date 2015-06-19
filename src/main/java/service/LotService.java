@@ -12,17 +12,18 @@ import java.util.List;
 @WebService()
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
 public interface LotService {
+
     @WebMethod
     public Lot getLotById(int id);
 
     @WebMethod
-    public void addLot(Lot lotForSaving) throws ParseException, SchedulerException;
+    public void addLot(Lot lotForSaving);
 
     @WebMethod
     public void deleteLot(int id);
 
     @WebMethod
-    public List<Lot> getAllLots() throws Exception;
+    public List<Lot> getAllLots();
 
     @WebMethod
     public void canceledLot(int id);

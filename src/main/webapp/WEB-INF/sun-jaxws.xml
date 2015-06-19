@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime'
             version='2.0'>
     <endpoint name="LotServiceImpl"
@@ -7,7 +8,7 @@
         <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
         <handler-chain>
             <handler>
-                <handler-class>service.AuthenticationHandlerFromSoapHeaders</handler-class>
+                <handler-class>service.handler.AuthenticationHandlerFromSoapHeaders</handler-class>
             </handler>
         </handler-chain>
     </handler-chains>
@@ -22,7 +23,7 @@
         <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
             <handler-chain>
                 <handler>
-                    <handler-class>service.AuthenticationHandlerFromSoapHeaders</handler-class>
+                    <handler-class>service.handler.AuthenticationHandlerFromSoapHeaders</handler-class>
                 </handler>
             </handler-chain>
         </handler-chains>

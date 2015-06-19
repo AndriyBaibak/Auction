@@ -10,6 +10,7 @@ import org.quartz.*;
 import java.util.List;
 
 public class SoldLotJob implements Job {
+
     private BidIntegration bidIntegration = new BidIntegration();
 
     private static Logger log = Logger.getLogger(SoldLotJob.class);
@@ -23,11 +24,11 @@ public class SoldLotJob implements Job {
             log.error(e1);
         }
         Lot soldLot = (Lot) schedulerContext.get("lot");
-        List<Bid> list = bidIntegration.getAllBidsOnLotByLotId(soldLot.getId());
+        List<Bid> list = bidIntegration.getAllBidsOnLotByLotId(soldLot.getCode());
         if (list.isEmpty()) {
             soldLot.setState(State.Not_sold);
+        }else {
+            soldLot.setState(State.Sold);
         }
-        soldLot.setState(State.Sold);
-
     }
 }
