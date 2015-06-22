@@ -26,6 +26,6 @@ public interface LotService {
     public List<Lot> getAllLots();
 
     @WebMethod
-    public void canceledLot(int id);
+    public void canceledLot(int id , String owner);
 
 }

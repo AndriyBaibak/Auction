@@ -14,7 +14,7 @@ public interface LotDao {
 
     public void deleteLot(int id);
 
-    public void canceledLot(int id);
+    public void canceledLot(int id, String owner);
 
 
 }

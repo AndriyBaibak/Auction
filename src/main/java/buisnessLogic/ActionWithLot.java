@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface ActionWithLot {
+
     public void addLot(Lot lotForSaving);
 
     public Lot getLotById(int id);
@@ -14,6 +15,6 @@ public interface ActionWithLot {
 
     public void deleteLot(int id);
 
-    public void canceledLot(int id);
+    public void canceledLot(int id, String owner);
 
 }

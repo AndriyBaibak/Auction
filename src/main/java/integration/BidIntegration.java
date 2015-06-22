@@ -45,12 +45,12 @@ public class BidIntegration implements BidDao {
     }
 
     private String getOwnerOfThisLot(int lotId) {
-        String ownerOfCurrentLot = (String) entityManager.createNativeQuery("SELECT owner FROM lot where id = " + lotId + ";").getSingleResult();
+        String ownerOfCurrentLot = (String) entityManager.createNativeQuery("SELECT owner FROM lot where code = " + lotId + ";").getSingleResult();
         return ownerOfCurrentLot;
     }
 
     private boolean isNewPriceBiggestFroStartPrice(int lotId, double newPrice) {
-        Double startPrice = (Double) entityManager.createNativeQuery("SELECT startPrice FROM lot where id = " + lotId + ";").getSingleResult();
+        Double startPrice = (Double) entityManager.createNativeQuery("SELECT startPrice FROM lot where code = " + lotId + ";").getSingleResult();
         return (newPrice > startPrice);
     }
 

@@ -8,7 +8,7 @@ public class WindowForAddBid extends Window implements Button.ClickListener {
     private static Logger log = Logger.getLogger(WindowForAddBid.class);
 
     Button ok = new Button("Ok");
-    TextField textFieldForBid = new TextField("Bid");
+    TextField textFieldForBid = new TextField();
     Label $ = new Label("$");
     int idLotForbid;
 
@@ -33,20 +33,18 @@ public class WindowForAddBid extends Window implements Button.ClickListener {
     }
 
     public void buildBidSubWindow() {
-        HorizontalLayout bid = new HorizontalLayout(ok);
-        HorizontalLayout horizontalLayout = new HorizontalLayout(textFieldForBid);
-        HorizontalLayout horizontalLayout1 = new HorizontalLayout($);
-        horizontalLayout.setMargin(true);
         HorizontalLayout main = new HorizontalLayout();
-        main.addComponent(bid);
+        main.addComponent(new Label("Bid: "));
         main.addComponent(textFieldForBid);
         main.addComponent($);
-        /*bid.setComponentAlignment(ok, Alignment.MIDDLE_RIGHT);
-        bid.setComponentAlignment(textFieldForBid, Alignment.MIDDLE_CENTER);
-        bid.setComponentAlignment($, Alignment.MIDDLE_LEFT);*/
+        main.addComponent(ok);
+        main.setSpacing(true);
         main.setMargin(true);
-        setHeight("25%");
-        setWidth("35%");
+        main.setHeight("15%");
+
+        setWidth("300px");
+        setHeight("105px");
+        setCaption("New Bid");
         setContent(main);
         center();
     }

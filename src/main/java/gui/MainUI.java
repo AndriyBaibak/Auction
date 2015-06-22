@@ -7,8 +7,9 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
+
 import javax.servlet.annotation.WebServlet;
-@Theme("chameleon")
+
 public class MainUI extends UI {
 
 
@@ -25,6 +26,7 @@ public class MainUI extends UI {
 
     public static void addMainWindow(String loginForCurrentUser, String passwordForCurrentUser) {
         mainWindow = new MainWindow(loginForCurrentUser, passwordForCurrentUser);
+
         getCurrent().addWindow(mainWindow);
     }
 

@@ -32,8 +32,8 @@ public class ActionWithLotImpl implements ActionWithLot {
     }
 
     @Override
-    public void canceledLot(int id) {
-            lotIntegration.canceledLot(id);
+    public void canceledLot(int id, String owner) {
+            lotIntegration.canceledLot(id, owner);
     }
 
     @Override

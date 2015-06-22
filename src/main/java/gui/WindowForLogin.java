@@ -4,7 +4,6 @@ package gui;
 import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ChameleonTheme;
-import com.vaadin.ui.themes.Reindeer;
 import entity.user.User;
 import org.apache.log4j.Logger;
 
@@ -12,8 +11,8 @@ public class WindowForLogin extends Window implements Button.ClickListener {
     private static Logger log = Logger.getLogger(WindowForLogin.class);
     private Button btnLogin = new Button("Login");
     private Button registration = new Button("Registration");
-    private TextField login = new TextField("Login");
-    private PasswordField password = new PasswordField("Password");
+    private TextField login = new TextField();
+    private PasswordField password = new PasswordField();
     private WindowForRegistration registrationForm = new WindowForRegistration();
 
 
@@ -33,8 +32,12 @@ public class WindowForLogin extends Window implements Button.ClickListener {
                 String passwordForCheck = password.getValue();
                 ServiceBeetwenVaadinAndJaxWs serviceForCurrentUserWithLoginAndPassword = new ServiceBeetwenVaadinAndJaxWs(loginForCheck, passwordForCheck);
                 String passwordOfRegisteredEarlyUser = serviceForCurrentUserWithLoginAndPassword.getUserPasswordByLogin(loginForCheck);
-                if (!(passwordForCheck).equals(passwordOfRegisteredEarlyUser)) {
-                        close();
+                if ((passwordForCheck).equals(passwordOfRegisteredEarlyUser)) {
+                    MainUI.addMainWindow(loginForCheck, passwordOfRegisteredEarlyUser);
+                    MainUI.getMainWindow().refreshLots();
+                    close();
+                } else {
+                    close();
                     try {
                         throw new Exception("not valid password"); //todo вирішити проблему за роботою коду навіть якщо данні невірні
                     } catch (Exception e) {
@@ -42,14 +45,6 @@ public class WindowForLogin extends Window implements Button.ClickListener {
                     }
 
                 }
-                try {
-                    MainUI.addMainWindow(loginForCheck, passwordOfRegisteredEarlyUser);
-                    MainUI.getMainWindow().refreshLots();
-                    close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
             }
         });
         registration.addClickListener(new Button.ClickListener() {
@@ -62,22 +57,36 @@ public class WindowForLogin extends Window implements Button.ClickListener {
     }
 
     private void buildLayout() {
-        VerticalLayout verticalLayout = new VerticalLayout();
 
-        verticalLayout.addComponent(login);
-        verticalLayout.addComponent(password);
+        Label loginLabel = new Label("Login");
+        HorizontalLayout loginLayout = new HorizontalLayout(loginLabel, login);
+        loginLayout.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+        loginLayout.setSpacing(true);
+        loginLayout.setMargin(true);
 
-        HorizontalLayout buttons = new HorizontalLayout();
-        buttons.addComponent(btnLogin);
-        btnLogin.setStyleName(ChameleonTheme.BUTTON_WIDE);//todo
-        buttons.addComponent(registration);
-        verticalLayout.addComponent(buttons);
-        verticalLayout.setStyleName("backColor");
+        Label passwordLabel = new Label("Password");
+        HorizontalLayout passwordLayout = new HorizontalLayout(passwordLabel, password);
+        passwordLayout.setSpacing(true);
+        passwordLayout.setMargin(true);
+
+        HorizontalLayout buttons = new HorizontalLayout(btnLogin, registration);
         buttons.setMargin(true);
-        setStyleName("backColor");
-        verticalLayout.setMargin(true);
-        setContent(verticalLayout);
+        buttons.setSpacing(true);
+        buttons.setComponentAlignment(btnLogin, Alignment.MIDDLE_LEFT);
+        buttons.setComponentAlignment(registration, Alignment.MIDDLE_RIGHT);
+        btnLogin.setStyleName(ChameleonTheme.BUTTON_WIDE);
+        registration.setStyleName(ChameleonTheme.BUTTON_WIDE);
 
+        VerticalLayout verticalLayout = new VerticalLayout(loginLayout, passwordLayout, buttons);
+        verticalLayout.setComponentAlignment(loginLayout, Alignment.TOP_RIGHT);
+        verticalLayout.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
+        verticalLayout.setMargin(true);
+        verticalLayout.setSpacing(true);
+        verticalLayout.setStyleName("backColor");
+
+        setSizeUndefined();
+        setCaption("Authentication");
+        setContent(verticalLayout);
         center();
 
 

@@ -33,7 +33,7 @@ public class LotServiceImpl implements LotService {
     }
 
     @Override
-    public void canceledLot(int id) {
-            actionWithLot.canceledLot(id);
+    public void canceledLot(int id, String owner) {
+            actionWithLot.canceledLot(id, owner);
     }
 }

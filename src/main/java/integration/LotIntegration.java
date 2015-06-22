@@ -2,6 +2,7 @@ package integration;
 
 import entity.lot.Lot;
 import entity.lot.State;
+import entity.lot.Util;
 import integration.jpa.EntityManagerUtil;
 import org.apache.log4j.Logger;
 
@@ -57,12 +58,18 @@ public class LotIntegration implements LotDao {
     }
 
     @Override
-    public void canceledLot(int id) {
-        Lot lotForCanceled = getLotById(id);//todo change on only owner may canceledLot
-        lotForCanceled.setState(State.Cancelled);
-        entityManager.getTransaction().begin();
-        entityManager.merge(lotForCanceled);
-        entityManager.getTransaction().commit();
+    public void canceledLot(int id, String owner) {
+        Lot lotForCanceled = getLotById(id);
+        if(lotForCanceled.getOwner().equals(owner)) {
+            lotForCanceled.setState(State.Cancelled);
+        }
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(lotForCanceled);
+            entityManager.getTransaction().commit();
+        }catch (Exception e){
+            log.error("Exception" + e);
+        }
     }
 
     @Override

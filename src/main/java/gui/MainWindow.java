@@ -1,26 +1,21 @@
 package gui;
 
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ChameleonTheme;
-import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.Runo;
-import com.vaadin.ui.themes.ValoTheme;
 import entity.bid.Bid;
 import entity.lot.Lot;
-import org.apache.log4j.Logger;
 
 public class MainWindow extends Window implements Button.ClickListener {
 
-    Grid gridLots = new Grid("Lots");
-    Grid gridBids = new Grid("Bids");
-    Table lotsDetails = new Table("Lot details");
+    Grid gridLots = new Grid();
+    Grid gridBids = new Grid();
+    Table lotsDetails = new Table();
     Button newLot = new Button("New Lot");
     Button newBid = new Button("New Bid");
-    Button cancelTrades = new Button("Cancel trades");
+    Button cancelTrades = new Button("Cancell trades");
     Button logout = new Button("Logout");
     public static String owner;
 
@@ -33,6 +28,7 @@ public class MainWindow extends Window implements Button.ClickListener {
         configureComponents();
         owner = serviceForVaadin.getUserNameByUserLogin();
         buildLayout();
+
     }
 
 
@@ -52,7 +48,9 @@ public class MainWindow extends Window implements Button.ClickListener {
         cancelTrades.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                serviceForVaadin.canceledLot(lotForDetails.getCode());
+                serviceForVaadin.canceledLot(lotForDetails.getCode(), owner);
+                lotsDetails.removeAllItems();
+                refreshLots();
             }
         });
         newBid.addClickListener(new Button.ClickListener() {
@@ -85,93 +83,73 @@ public class MainWindow extends Window implements Button.ClickListener {
 
     private void buildLayout() {
         VerticalLayout lots = new VerticalLayout(gridLots, newLot);
+        lots.setCaption("Lots");
         lots.setSpacing(true);
-        gridLots.setHeight("535px");
+        lots.setMargin(true);
+        gridLots.setHeight("395px");
         gridLots.setWidth("600px");
         lots.setComponentAlignment(newLot, Alignment.BOTTOM_RIGHT);
 
         VerticalLayout bids = new VerticalLayout(gridBids, newBid);
+        bids.setCaption("Bids");
+        bids.setMargin(true);
         bids.setSpacing(true);
-        gridBids.setHeight("200px");
+        gridBids.setHeight("140px");
         gridBids.setWidth("100%");
         bids.setComponentAlignment(newBid, Alignment.BOTTOM_RIGHT);
 
         HorizontalLayout details = new HorizontalLayout(lotsDetails, cancelTrades);
-        details.setStyleName("backColor");
-        lotsDetails.setHeight("100%");//todo
-        lotsDetails.setWidth("100%");
-        details.setHeight("98%");
-        details.setWidth("98%");//todo
-
+        details.setCaption("Lot details");
+        details.setMargin(true);
+        details.setSpacing(true);
+        lotsDetails.setHeight("180px");
+        lotsDetails.setWidth("475px");
         details.setComponentAlignment(cancelTrades, Alignment.BOTTOM_RIGHT);
 
+        Panel panelForLots = new Panel("Lots");
+        panelForLots.setContent(lots);
 
-        Panel lotPanel = new Panel();
-        Panel bidPanel = new Panel();
-        bidPanel.setStyleName("backColor");
-        Panel lotDetail = new Panel();
-        lotDetail.setStyleName("backColor");
+        Panel panelForBids = new Panel("Bids");
+        panelForBids.setWidth("100%");
+        panelForBids.setContent(bids);
 
-
-        lotPanel.setWidth("600px");
-        lotPanel.setHeight("800px");
-        lotPanel.setContent(lots);
-        lotPanel.setStyleName(Runo.CSSLAYOUT_SHADOW);//todo
+        Panel panelFoLotDetails = new Panel("Lot details");
+        panelFoLotDetails.setContent(details);
 
 
-        bidPanel.setHeight("100%");
-        bidPanel.setWidth("760px");
-        bidPanel.setContent(bids);
+        VerticalLayout rightHalf = new VerticalLayout(panelFoLotDetails, panelForBids);
+        rightHalf.setMargin(true);
+        rightHalf.setSpacing(true);
+        rightHalf.setWidth("665px");
 
-        lotDetail.setHeight("100%");
-        lotDetail.setWidth("760px");
-        lotDetail.setContent(details);
-
-        VerticalLayout rightHalf = new VerticalLayout();
-        rightHalf.setWidth("98%");
-        rightHalf.addComponent(lotDetail);
-        lotDetail.setHeight("330px");
-        lotDetail.setStyleName("backColor");//todo
-
-        rightHalf.addComponent(bidPanel);
-        bidPanel.setHeight("270px");
-        rightHalf.setComponentAlignment(bidPanel, Alignment.BOTTOM_CENTER);
-
-
-        HorizontalLayout body = new HorizontalLayout();
-        body.addComponent(lotPanel);
-        body.addComponent(rightHalf);
-        lotPanel.setHeight("600px");
-        rightHalf.setHeight("600px");
-
-        VerticalLayout mainLayout = new VerticalLayout();
+        HorizontalLayout body = new HorizontalLayout(panelForLots, rightHalf);
+        body.setComponentAlignment(panelForLots, Alignment.MIDDLE_LEFT);
+        body.setSpacing(true);
+        body.setMargin(true);
 
         Label auction = new Label(" Auction");
-        auction.setStyleName(ChameleonTheme.LABEL_H1);
-        auction.setWidth("70%");
+        auction.setStyleName(ChameleonTheme.LABEL_H2);
+
         Label labelForUserName = new Label(" User: " + owner);
-        labelForUserName.setWidth("250px");
 
         HorizontalLayout rightPartOfHead = new HorizontalLayout(labelForUserName, logout);
-        rightPartOfHead.setWidth("30%");
-        rightPartOfHead.setComponentAlignment(labelForUserName, Alignment.MIDDLE_LEFT);
-        rightPartOfHead.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
+        rightPartOfHead.setSpacing(true);
+
         HorizontalLayout horizontalLayout = new HorizontalLayout(auction, rightPartOfHead);
-        horizontalLayout.setHeight("40px");
-        System.out.print(horizontalLayout.getHeight());
-
-        horizontalLayout.setComponentAlignment(rightPartOfHead, Alignment.MIDDLE_RIGHT);
-        horizontalLayout.setComponentAlignment(auction, Alignment.MIDDLE_LEFT);
+        horizontalLayout.setComponentAlignment(auction, Alignment.TOP_LEFT);
+        horizontalLayout.setComponentAlignment(rightPartOfHead, Alignment.TOP_RIGHT);
         horizontalLayout.setWidth("100%");
-        mainLayout.addComponent(horizontalLayout);
-        mainLayout.addComponent(body);
-        mainLayout.setStyleName("backColor");
-        setCaption("Auction");
-        setResizable(false);//todo
+
+        VerticalLayout mainLayout = new VerticalLayout(horizontalLayout, body);
+        horizontalLayout.setHeight("5px");
+        mainLayout.setSpacing(true);
+        mainLayout.setMargin(true);
+
+        setCaption(" Auction");
         setContent(mainLayout);
+        setHeight("100%");
+        setWidth("100%");
         center();
-
-
     }
 
     public void refreshLotDetails(Lot lotForDetails) {

@@ -11,10 +11,12 @@ public class ActionWithUserImpl implements ActionWithUser {
     public void registration(User user) {
         userIntegration.registration(user);
     }
+
     @Override
     public String getUserPasswordByLogin(String login) {
         return userIntegration.getUserPasswordByLogin(login);
     }
+
     @Override
     public String getUserNameByUserLogin(String login) {
         return userIntegration.getUserNameByUserLogin(login);

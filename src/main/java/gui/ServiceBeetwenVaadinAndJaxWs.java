@@ -94,8 +94,8 @@ public class ServiceBeetwenVaadinAndJaxWs {
         return lotService.getAllLots();
     }
 
-    protected void canceledLot(int id) {
-        lotService.canceledLot(id);
+    protected void canceledLot(int id, String owner) {
+        lotService.canceledLot(id, owner);
     }
 
     protected void registration(User user) {

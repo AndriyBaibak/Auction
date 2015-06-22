@@ -11,10 +11,10 @@ public class WindowForRegistration extends Window implements Button.ClickListene
 
     private Button register = new Button("Register");
     private Button cancel = new Button("Cancel");
-    TextField login = new TextField("Login");
-    private TextField password = new TextField("Password");
-    private TextField firstName = new TextField("First Name");
-    private TextField lastName = new TextField("Last Name");
+    TextField login = new TextField();
+    private TextField password = new TextField();
+    private TextField firstName = new TextField();
+    private TextField lastName = new TextField();
 
 
     public WindowForRegistration() {
@@ -48,11 +48,44 @@ public class WindowForRegistration extends Window implements Button.ClickListene
     }
 
     private void buildLayout() {
+
+        Label loginLabel = new Label("Login");
+        HorizontalLayout loginLayout = new HorizontalLayout(loginLabel, login);
+        loginLayout.setMargin(true);
+        loginLayout.setSpacing(true);
+        loginLayout.setWidth("60%");
+
+        Label passwordLabel = new Label("Password");
+        HorizontalLayout passwordLayout = new HorizontalLayout(passwordLabel, password);
+        passwordLayout.setMargin(true);
+        passwordLayout.setSpacing(true);
+        passwordLayout.setWidth("60%");
+
+        Label firstNameLabel = new Label("First name");
+        HorizontalLayout firstNameLayout = new HorizontalLayout(firstNameLabel, firstName);
+        firstNameLayout.setMargin(true);
+        firstNameLayout.setSpacing(true);
+        firstNameLayout.setWidth("60%");
+
+        Label lastNameLabel = new Label("Last name");
+        HorizontalLayout lastNameLayout = new HorizontalLayout(lastNameLabel, lastName);
+        lastNameLayout.setMargin(true);
+        lastNameLayout.setSpacing(true);
+        lastNameLayout.setWidth("60%");
+
         HorizontalLayout buttons = new HorizontalLayout(register, cancel);
         buttons.setMargin(true);
-        VerticalLayout mainLayout = new VerticalLayout(login, password, firstName, lastName, buttons);
-        mainLayout.setStyleName(ChameleonTheme.LABEL_COLOR);
+        buttons.setSpacing(true);
+        register.setStyleName(ChameleonTheme.BUTTON_WIDE);
+        cancel.setStyleName(ChameleonTheme.BUTTON_WIDE);
+
+        VerticalLayout mainLayout = new VerticalLayout(loginLayout, passwordLayout, firstNameLayout, lastNameLayout, buttons);
         mainLayout.setMargin(true);
+        mainLayout.setSpacing(true);
+        mainLayout.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
+
+        setSizeUndefined();
+        setCaption("Registration");
         setContent(mainLayout);
         setStyleName("headers");
         center();
