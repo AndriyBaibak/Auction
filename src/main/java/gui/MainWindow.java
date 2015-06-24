@@ -7,15 +7,17 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ChameleonTheme;
 import entity.bid.Bid;
 import entity.lot.Lot;
+import org.apache.log4j.Logger;
 
 public class MainWindow extends Window implements Button.ClickListener {
+    private static Logger log = Logger.getLogger(MainWindow.class);
 
     Grid gridLots = new Grid();
     Grid gridBids = new Grid();
     Table lotsDetails = new Table();
     Button newLot = new Button("New Lot");
     Button newBid = new Button("New Bid");
-    Button cancelTrades = new Button("Cancell trades");
+    Button cancelTrades = new Button("Cancel trades");
     Button logout = new Button("Logout");
     public static String owner;
 
@@ -48,9 +50,13 @@ public class MainWindow extends Window implements Button.ClickListener {
         cancelTrades.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                serviceForVaadin.canceledLot(lotForDetails.getCode(), owner);
-                lotsDetails.removeAllItems();
-                refreshLots();
+                    serviceForVaadin.canceledLot(lotForDetails.getCode(), owner);
+                    try {
+                        lotsDetails.removeAllItems();
+                        refreshLots();
+                    }catch(Exception ex){
+                        log.error("Exception " + ex);
+                    }
             }
         });
         newBid.addClickListener(new Button.ClickListener() {

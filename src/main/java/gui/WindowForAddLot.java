@@ -59,25 +59,25 @@ public class WindowForAddLot extends Window implements Button.ClickListener {
         HorizontalLayout layoutLotName = new HorizontalLayout(lotNameLabel, name);
         layoutLotName.setSpacing(true);
         layoutLotName.setMargin(true);
-        layoutLotName.setWidth("56%");
+        layoutLotName.setWidth("55%");
 
         Label dateLabel = new Label("Date");
         HorizontalLayout dateLayout = new HorizontalLayout(dateLabel, date);
         dateLayout.setSpacing(true);
         dateLayout.setMargin(true);
-        dateLayout.setWidth("56%");
+        dateLayout.setWidth("55%");
 
         Label descriptionLabel = new Label("Description");
         HorizontalLayout descriptionLayout = new HorizontalLayout(descriptionLabel, description);
         descriptionLayout.setSpacing(true);
         descriptionLayout.setMargin(true);
-        descriptionLayout.setWidth("56%");
+        descriptionLayout.setWidth("55%");
 
         Label priceLabel = new Label("Price");
         HorizontalLayout priceLayout = new HorizontalLayout(priceLabel, price);
         priceLayout.setSpacing(true);
         priceLayout.setMargin(true);
-        priceLayout.setWidth("56%");
+        priceLayout.setWidth("55%");
 
         HorizontalLayout buttons = new HorizontalLayout(add, cancel);
         buttons.setSpacing(true);

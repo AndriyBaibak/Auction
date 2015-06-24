@@ -4,22 +4,5 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
 
-    <listener>
-        <listener-class>
-            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
-        </listener-class>
-    </listener>
 
-    <servlet id="ws-entities-servlet">
-        <servlet-name>EntityService</servlet-name>
-        <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping id="ws-entities-servlet-mapping">
-        <servlet-name>EntityService</servlet-name>
-        <url-pattern>/Auction-1.0/lot</url-pattern>
-    </servlet-mapping>
 </web-app>
