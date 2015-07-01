@@ -7,7 +7,7 @@ import javax.jws.WebService;
 
 @WebService(serviceName = "UserServiceImpl",
         portName="EntityPort",
-        endpointInterface = "service.UserService")
+        endpointInterface = "service.UserService", targetNamespace = "")
 public class UserServiceImpl implements UserService {
 
     private ActionWithUserImpl actionWithUser = new ActionWithUserImpl();

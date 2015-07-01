@@ -1,12 +1,10 @@
 package service;
 
 import entity.lot.Lot;
-import org.quartz.SchedulerException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import java.text.ParseException;
 import java.util.List;
 
 @WebService()

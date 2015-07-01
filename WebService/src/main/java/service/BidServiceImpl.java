@@ -2,7 +2,6 @@ package service;
 
 import buisnessLogic.ActionWithBidImpl;
 import entity.bid.Bid;
-import org.apache.log4j.Logger;
 
 import javax.jws.WebService;
 import java.util.List;

@@ -2,14 +2,11 @@ package integration;
 
 import entity.lot.Lot;
 import entity.lot.State;
-import entity.lot.Util;
 import integration.jpa.EntityManagerUtil;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class LotIntegration implements LotDao {
